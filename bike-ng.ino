@@ -2,28 +2,6 @@
 
 #define BUTTON_PIN 9
 
-#define DATA_PIN_F1 1
-#define NUM_LEDS_F1 24
-#define DATA_PIN_F2 0
-#define NUM_LEDS_F2 24
-
-#define DATA_PIN_F 6
-#define NUM_LEDS_F 60
-
-//int f1 = 22;
-//int f2 = 27;
-//int f3 = 11;
-
-#define DATA_PIN_B1 5
-#define NUM_LEDS_B1 22
-#define DATA_PIN_B2 4
-#define NUM_LEDS_B2 22
-
-#define DATA_PIN_S1 10
-#define NUM_LEDS_S1 24
-#define DATA_PIN_S2 11
-#define NUM_LEDS_S2 24
-
 //   The bike LEDs are composed of 7 strips:
 //   * 2x 24 LED strips in the front fork, top to bottom
 //   * 1x 60 LED strip in the frame, divided in
@@ -35,20 +13,39 @@
 //     - 11 LEDs, from the bottom of the base of the saddle post to the dropouts
 //   * 2x 24 LED strips from the dropouts upwards, in the sissy bar.
 
-int ledStrips[87] = {23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10,  9,  8,  7,  6,  5,  4,  3,  2,  1,  0,
-                     22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
-                     0,
-                     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-                     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23
-                    };
+#define DATA_PIN_F1 1
+#define NUM_LEDS_F1 24
+#define DATA_PIN_F2 0
+#define NUM_LEDS_F2 24
 
-int ledArray[87] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                    2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-                    3,
-                    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-                    5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
-                   };
-int allLeds = 87;
+#define DATA_PIN_F 6
+#define NUM_LEDS_F 60
+
+#define DATA_PIN_B1 5
+#define NUM_LEDS_B1 22
+#define DATA_PIN_B2 4
+#define NUM_LEDS_B2 22
+
+#define DATA_PIN_S1 10
+#define NUM_LEDS_S1 24
+#define DATA_PIN_S2 11
+#define NUM_LEDS_S2 24
+
+int ledArray87[87] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                      2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                      3,
+                      4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+                      5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
+                     };
+
+int ledArray130[130] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                        2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                        2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                        3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+                        4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+                       };
+
+CRGB leds130[130];
 
 CRGB leds_f1[NUM_LEDS_F1];
 CRGB leds_f2[NUM_LEDS_F2];
@@ -68,19 +65,27 @@ void setup() {
   FastLED.addLeds<NEOPIXEL, DATA_PIN_B2>(leds_b2, NUM_LEDS_B2);
   FastLED.addLeds<NEOPIXEL, DATA_PIN_S1>(leds_s1, NUM_LEDS_S1);
   FastLED.addLeds<NEOPIXEL, DATA_PIN_S2>(leds_s2, NUM_LEDS_S2);
-  FastLED.setBrightness(100);
+  //  FastLED.setBrightness(100);
+
   // Initialize the button
   pinMode(BUTTON_PIN, INPUT_PULLUP);
   digitalWrite(BUTTON_PIN, HIGH);
 
 }
 
-int  count = 0;
-int  color = 0;
-CRGB color_rgb;
+int     count = 0;
+int     color = 0;
+uint8_t gHue =  0;
+CRGB    color_rgb;
+
+int NUM_F_ANIMATIONS = 4;
+int f_animation = 1;
 
 void loop() {
-  EVERY_N_MILLISECONDS(50) {
+  EVERY_N_MILLISECONDS( 5 ) {
+    gHue++;  // slowly cycle the "base color" through the rainbow
+  }
+  EVERY_N_MILLISECONDS(1) {
     if (count < 87) {
       count++;
     } else {
@@ -90,27 +95,69 @@ void loop() {
     }
   }
   color_rgb = CRGB::Blue;
-  // put your main code here, to run repeatedly:
-  //  audioVuMeter();
-  //  allAddGlitterBy(80)
-  //  cylon();
-  //  allArrayFrontToBack(count);
-  switch (color) {
-    case 0:
-      color_rgb = CRGB::Blue;
-      allArrayBTF(count, color_rgb);
-      break;
+  switch (f_animation) {
     case 1:
-      color_rgb = CRGB::Green;
-      allArrayBTF(count, color_rgb);
+      allFillRainbow();
+      //audioVuMeter(color_rgb);
       break;
     case 2:
-      color_rgb = CRGB::Red;
-      allArrayBTF(count, color_rgb);
+      allAddGlitterBy(80);
       break;
+    case 3:
+      cylon();
+      break;
+    case 4:
+      //  allArrayFrontToBack(count);
+      switch (color) {
+        case 0:
+          color_rgb = CRGB::Blue;
+          allArrayBTF(count, color_rgb);
+          break;
+        case 1:
+          color_rgb = CRGB::Green;
+          allArrayBTF(count, color_rgb);
+          break;
+        case 2:
+          color_rgb = CRGB::Red;
+          allArrayBTF(count, color_rgb);
+          break;
+          //    case 3:
+          //      color_rgb = CRGB::Blue;
+          //      allArrayFTB(count, color_rgb);
+          //      break;
+          //    case 4:
+          //      color_rgb = CRGB::Green;
+          //      allArrayFTB(count, color_rgb);
+          //      break;
+          //    case 5:
+          //      color_rgb = CRGB::Red;
+          //      allArrayFTB(count, color_rgb);
+          //      break;
+      }
   }
   FastLED.show();
+  buttons();
+}
 
+void allFillRainbow() {
+  fill_rainbow(leds130, 130, gHue, 5);
+  for (int i = 0; i < 130; i++) {
+    switch (ledArray130[i]) {
+      case 1:
+        // 0-23
+        leds_f1[map(i, 0, 23, 23, 0)] = leds130[i];
+        break;
+      case 2:
+        leds_f[map(i, 24, 83, 0, 59)] = leds130[i];
+        break;
+      case 3:
+        leds_b1[map(i, 84, 105, 0, 21)] = leds130[i];
+        break;
+      case 4:
+        leds_s1[map(i, 106, 129, 0, 23)] = leds130[i];
+        break;
+    }
+  }
 }
 
 void cylon() {
@@ -120,90 +167,96 @@ void cylon() {
   for (int pos = j - 1 ; pos < j + 1 ; pos++) {
     if (pos < 0) pos = 0;
     if (pos > 87) pos = 87;
-    int loc = ledArray[pos];
+    int loc = ledArray87[pos];
     int b1_pos;
     int f_pos;
     switch (loc) {
       case 1:
-        leds_f1[ledStrips[pos]] += CHSV( gHue, 255, 192);
+        leds_f1[map(pos, 0, 23, 23, 0)] += CHSV( gHue, 255, 192);
         break;
       case 2:
-        leds_f[pos - 24 + 22] += CHSV( gHue, 255, 192);
-        f_pos = map(pos - 24, 0, 27, 0, 22);
-        leds_f[21 - f_pos] += CHSV( gHue, 255, 192);
+        leds_f[map(pos, 24, 50, 22, 48)] += CHSV( gHue, 255, 192);
+        leds_f[map(pos, 24, 50, 21,  0)] += CHSV( gHue, 255, 192);
         break;
       case 3:
         for (int i = 0; i < 11; i++) {
-          leds_f[i + 22 + 27] += CHSV( gHue, 255, 192);
+          leds_f[map(i, 0, 10, 49, 59)] += CHSV( gHue, 255, 192);
         }
         break;
       case 4:
-        b1_pos = pos - 24 - 27 - 1;
-        leds_b1[b1_pos] += CHSV( gHue, 255, 192);
-        leds_b1[21 - b1_pos] += CHSV( gHue, 255, 192);
+        leds_b1[map(pos, 52, 62,  0, 10)] += CHSV( gHue, 255, 192);
+        leds_b1[map(pos, 52, 62, 21, 11)] += CHSV( gHue, 255, 192);
         break;
       case 5:
-        leds_s1[pos - 24 - 27 - 1 - 11] += CHSV( gHue, 255, 192);
+        leds_s1[map(pos, 63, 86,  0, 23)] += CHSV( gHue, 255, 192);
         break;
     }
   }
 }
 
 void allArrayFTB(int pos, CRGB color) {
-  int loc = ledArray[pos];
+  int loc = ledArray87[pos];
   switch (loc) {
     case 1:
+      //  0-23 -> 1(23-0)
       leds_f1[map(pos, 0, 23, 23, 0)] = leds_f2[map(pos, 0, 23, 23, 0)] = color;
       break;
     case 2:
+      // 24-50 -> 2(22-48, 21, 0)
       leds_f[map(pos, 24, 50, 22, 48)] = leds_f[map(pos, 24, 50, 21, 0)] = color;
       break;
     case 3:
+      // 51 -> 2(49, 59)
       leds_f[49] = leds_f[59] = color;
       break;
     case 4:
-      if (ledStrips[pos] <= 4) {
-        leds_f[50 + ledStrips[pos]] = leds_f[58 - ledStrips[pos]] = color;
+      // 52-56 -> 2(50-54, 58-54)
+      // 52-62 -> 3(0-10, 21-11)
+      if (pos <= 56) {
+        leds_f[map(pos, 52, 56, 50, 54)] = leds_f[map(pos, 52, 56, 58, 54)] = color;
       }
-      leds_b1[ledStrips[pos]] = leds_b2[21 - ledStrips[pos]] = color;
-      leds_b1[map(ledStrips[pos], 0, 10, 21, 11)] = color;
-      leds_b2[21 - map(ledStrips[pos], 0, 10, 21, 11)] = color;
+      leds_b1[map(pos, 52, 62, 0, 10)] = leds_b1[map(pos, 52, 62, 21, 11)] = color;
       break;
     case 5:
-      leds_s1[ledStrips[pos]] = leds_s2[ledStrips[pos]] = color;
+      // 63-86 -> 4(0-23)
+      leds_s1[map(pos, 63, 86, 0, 23)] = leds_s2[map(pos, 63, 86, 0, 23)] = color;
       break;
   }
 }
 void allArrayBTF(int pos, CRGB color) {
   pos = map(pos, 0, 87, 87 , 0);
-  int loc = ledArray[pos];
+  int loc = ledArray87[pos];
   switch (loc) {
     case 1:
-      leds_f1[ledStrips[pos]] = leds_f2[ledStrips[pos]] = color;
+      //  0-23 -> 1(23-0)
+      leds_f1[map(pos, 0, 23, 23, 0)] = leds_f2[map(pos, 0, 23, 23, 0)] = color;
       break;
     case 2:
-      if (ledStrips[pos] >= 44) {
-        leds_f[50 + 48 - ledStrips[pos]] = leds_f[58 - 48 + ledStrips[pos]] = color;
+      // 24-50 -> 2(22-48, 21-0)
+      // 46-50 -> 2(50-54, 58-54))
+      if (pos >= 46) {
+        leds_f[map(pos, 50, 46, 50, 54)] = leds_f[map(pos, 50, 46, 58, 54)] = color;
       }
-      leds_f[ledStrips[pos]] = leds_f[map(ledStrips[pos], 22, 48, 21, 0)] = color;
+      leds_f[map(pos, 24, 50, 22, 48)] = leds_f[map(pos, 24, 50, 21, 0)] = color;
       break;
     case 3:
+      // 51 -> 2(49, 59)
       leds_f[49] = leds_f[59] = color;
       break;
     case 4:
-      leds_b1[ledStrips[pos]] = leds_b2[21 - ledStrips[pos]] = color;
-      leds_b1[map(ledStrips[pos], 0, 10, 21, 11)] = color;
-      leds_b2[21 - map(ledStrips[pos], 0, 10, 21, 11)] = color;
+      // 52-62 -> 3(0-10, 21-11)
+      leds_b1[map(pos, 52, 62, 0, 10)] = leds_b1[map(pos, 52, 62, 21, 11)] = color;
       break;
     case 5:
-      leds_s1[ledStrips[pos]] = leds_s2[ledStrips[pos]] = color;
+      leds_s1[map(pos, 63, 86, 0, 23)] = leds_s2[map(pos, 63, 86, 0, 23)] = color;
       break;
   }
 }
 
 void audioVuMeter(CRGB color) {
   int level = vuMeter();
-//  color = CRGB::Blue;
+  //  color = CRGB::Blue;
+  allFadeToBlackBy(192);
   mapToLeds(leds_f1,  0, 23, level, color);
   mapToLeds(leds_f,   0, 21, level, color);
   mapToLeds(leds_f,  22, 48, level, color);
@@ -214,9 +267,7 @@ void audioVuMeter(CRGB color) {
 }
 
 void mapToLeds(CRGB * leds, int first, int num_leds, int peak, CRGB color) {
-  // First fade all the LEDs to black. This adds a fading efect instead of colors going black immediately.
-  fadeToBlackBy(leds, num_leds, 128);
-  // Then map the peak to a numbers of LEDs.
+  // Map the peak to a numbers of LEDs.
   int level = map(peak, 1, 600, -1, num_leds - first + 1);
   // And now color them.
   for (int led = first; led <= first + level; led++)
@@ -284,7 +335,6 @@ void allAddGlitterBy(int by) {
   addGlitter(leds_s2, NUM_LEDS_S2, by);
 }
 
-
 void addGlitter(CRGB * leds, uint8_t num_leds, fract8 chanceOfGlitter) {
   if ( random8() < chanceOfGlitter) {
     leds[random16(num_leds)] += CRGB::White;
@@ -292,3 +342,105 @@ void addGlitter(CRGB * leds, uint8_t num_leds, fract8 chanceOfGlitter) {
   fadeToBlackBy(leds, num_leds, 192);
 }
 
+
+void buttons() {
+  int b = checkButton();
+  if (b == 1) {
+    f_animation++;
+    if (f_animation > NUM_F_ANIMATIONS)
+      f_animation = 1;
+  }
+
+  //  if (b == 2) {
+  //    b_animation++;
+  //    if (b_animation > NUM_B_ANIMATIONS)
+  //      b_animation = 1;
+  //  }
+  //  if (b == 3) {
+  //    f_animation = 50;
+  //    b_animation = 50;
+  //  }
+  //  if (b == 4) {
+  //    f_animation = 100;
+  //    b_animation = 100;
+  //  }
+}
+
+
+// Button timing variables
+int debounce = 20; // ms debounce period to prevent flickering when pressing or releasing the button
+int DCgap = 250; // max ms between clicks for a double click event
+int holdTime = 2000; // ms hold period: how long to wait for press+hold event
+int longHoldTime = 5000; // ms long hold period: how long to wait for press+hold event
+
+// Other button variables
+boolean buttonVal = HIGH; // value read from button
+boolean buttonLast = HIGH; // buffered value of the button's previous state
+boolean DCwaiting = false; // whether we're waiting for a double click (down)
+boolean DConUp = false; // whether to register a double click on next release, or whether to wait and click
+boolean singleOK = true; // whether it's OK to do a single click
+long downTime = -1; // time the button was pressed down
+long upTime = -1; // time the button was released
+boolean ignoreUp = false; // whether to ignore the button release because the click+hold was triggered
+boolean waitForUp = false; // when held, whether to wait for the up event
+boolean holdEventPast = false; // whether or not the hold event happened already
+boolean longHoldEventPast = false;// whether or not the long hold event happened already
+
+int checkButton()
+{
+  int event = 0;
+  // Read the state of the button
+  buttonVal = digitalRead(BUTTON_PIN);
+  // Button pressed down
+  if (buttonVal == LOW && buttonLast == HIGH && (millis() - upTime) > debounce) {
+    downTime = millis();
+    ignoreUp = false;
+    waitForUp = false;
+    singleOK = true;
+    holdEventPast = false;
+    longHoldEventPast = false;
+    if ((millis() - upTime) < DCgap && DConUp == false && DCwaiting == true) DConUp = true;
+    else DConUp = false;
+    DCwaiting = false;
+  }
+  // Button released
+  else if (buttonVal == HIGH && buttonLast == LOW && (millis() - downTime) > debounce) {
+    if (not ignoreUp) {
+      upTime = millis();
+      if (DConUp == false) DCwaiting = true;
+      else {
+        event = 2;
+        DConUp = false;
+        DCwaiting = false;
+        singleOK = false;
+      }
+    }
+  }
+  // Test for normal click event: DCgap expired
+  if ( buttonVal == HIGH && (millis() - upTime) >= DCgap && DCwaiting == true && DConUp == false && singleOK == true) {
+    event = 1;
+    DCwaiting = false;
+  }
+  // Test for hold
+  if (buttonVal == LOW && (millis() - downTime) >= holdTime) {
+    // Trigger "normal" hold
+    if (not holdEventPast) {
+      event = 3;
+      waitForUp = true;
+      ignoreUp = true;
+      DConUp = false;
+      DCwaiting = false;
+      //downTime = millis();
+      holdEventPast = true;
+    }
+    // Trigger "long" hold
+    if ((millis() - downTime) >= longHoldTime) {
+      if (not longHoldEventPast) {
+        event = 4;
+        longHoldEventPast = true;
+      }
+    }
+  }
+  buttonLast = buttonVal;
+  return event;
+}
