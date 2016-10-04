@@ -76,10 +76,12 @@ void setup() {
 int     count = 0;
 int     color = 0;
 uint8_t gHue =  0;
-CRGB    color_rgb;
+CRGB    color_rgb = CRGB::Blue;
+CHSV    color_hsv;
 
-int NUM_F_ANIMATIONS = 4;
+int NUM_F_ANIMATIONS = 5;
 int f_animation = 1;
+int mode = 1;
 
 void loop() {
   EVERY_N_MILLISECONDS( 5 ) {
@@ -94,20 +96,33 @@ void loop() {
       if (color == 3) color = 0;
     }
   }
-  color_rgb = CRGB::Blue;
+  switch (mode) {
+    case 1:
+      mode1();
+      break;
+    case 2:
+      mode1();
+      break;
+  }
+  FastLED.show();
+  buttons();
+}
+
+void mode1() {
   switch (f_animation) {
     case 1:
       allFillRainbow();
-      //audioVuMeter(color_rgb);
       break;
     case 2:
-      allAddGlitterBy(80);
+      audioVuMeter(color_rgb);
       break;
     case 3:
-      cylon();
+      allAddGlitterBy(80);
       break;
     case 4:
-      //  allArrayFrontToBack(count);
+      cylon();
+      break;
+    case 5:
       switch (color) {
         case 0:
           color_rgb = CRGB::Blue;
@@ -135,8 +150,6 @@ void loop() {
           //      break;
       }
   }
-  FastLED.show();
-  buttons();
 }
 
 void allFillRainbow() {
@@ -266,13 +279,14 @@ void audioVuMeter(CRGB color) {
   mapToLeds(leds_s1,  0, 23, level, color);
 }
 
-void mapToLeds(CRGB * leds, int first, int num_leds, int peak, CRGB color) {
+void mapToLeds(CRGB * leds, int first, int last, int peak, CRGB color) {
+  fill_rainbow(leds130, 130, gHue, 5);
   // Map the peak to a numbers of LEDs.
-  int level = map(peak, 1, 600, -1, num_leds - first + 1);
+  int level = map(peak, 1, 600, -1, last - first + 1);
   // And now color them.
   for (int led = first; led <= first + level; led++)
   {
-    leds[led] = color;
+    leds[led] = leds130[led];
   }
 }
 
