@@ -78,12 +78,20 @@ int     color = 0;
 uint8_t gHue =  0;
 CRGB    color_rgb = CRGB::Blue;
 CHSV    color_hsv;
+int     cycle = 0;
 
 int NUM_F_ANIMATIONS = 5;
 int f_animation = 1;
+int MODES = 2;
 int mode = 1;
 
 void loop() {
+  EVERY_N_MILLISECONDS( 100 ) {
+    cycle++;
+    if (cycle == 3) {
+      cycle = 0;
+    }
+  }
   EVERY_N_MILLISECONDS( 5 ) {
     gHue++;  // slowly cycle the "base color" through the rainbow
   }
@@ -96,6 +104,7 @@ void loop() {
       if (color == 3) color = 0;
     }
   }
+
   switch (mode) {
     case 1:
       mode1();
@@ -155,22 +164,55 @@ void mode1() {
 void allFillRainbow() {
   fill_rainbow(leds130, 130, gHue, 5);
   for (int i = 0; i < 130; i++) {
-    switch (ledArray130[i]) {
-      case 1:
-        // 0-23
-        leds_f1[map(i, 0, 23, 23, 0)] = leds130[i];
-        break;
-      case 2:
-        leds_f[map(i, 24, 83, 0, 59)] = leds130[i];
-        break;
-      case 3:
-        leds_b1[map(i, 84, 105, 0, 21)] = leds130[i];
-        break;
-      case 4:
-        leds_s1[map(i, 106, 129, 0, 23)] = leds130[i];
-        break;
+    allFill130(i, leds130[i]);
+    //    switch (ledArray130[i]) {
+    //      case 1:
+    //        // 0-23
+    //        leds_f1[map(i, 0, 23, 23, 0)] = leds_f2[map(i, 0, 23, 23, 0)] = leds130[i];
+    //        break;
+    //      case 2:
+    //        leds_f[map(i, 24, 83, 0, 59)] = leds130[i];
+    //        break;
+    //      case 3:
+    //        leds_b1[map(i, 84, 105, 0, 21)] = leds_b2[map(i, 84, 105, 0, 21)] = leds130[i];
+    //        break;
+    //      case 4:
+    //        leds_s1[map(i, 106, 129, 0, 23)] = leds_s2[map(i, 106, 129, 0, 23)] = leds130[i];
+    //        break;
+    //    }
+  }
+}
+
+void theaterChase(bool rainbow) {
+  allFadeToBlackBy(50);
+  for (int i = 0; i < 130; i = i + 3) {
+    if (i + cycle < 130) {
+      if (rainbow == true) {
+        allFill130(i + cycle, CHSV(gHue + i, 255, 192));
+      } else {
+        allFill130(i + cycle, CRGB::White);
+      }
     }
   }
+}
+
+void allFill130(int pos, CRGB color) {
+  switch (ledArray130[pos]) {
+    case 1:
+      // 0-23
+      leds_f1[map(pos, 0, 23, 23, 0)] = leds_f2[map(pos, 0, 23, 23, 0)] = color;
+      break;
+    case 2:
+      leds_f[map(pos, 24, 83, 0, 59)] = color;
+      break;
+    case 3:
+      leds_b1[map(pos, 84, 105, 0, 21)] = leds_b2[map(pos, 84, 105, 0, 21)] = color;
+      break;
+    case 4:
+      leds_s1[map(pos, 106, 129, 0, 23)] = leds_s2[map(pos, 106, 129, 0, 23)] = color;
+      break;
+  }
+
 }
 
 void cylon() {
@@ -229,6 +271,7 @@ void allArrayFTB(int pos, CRGB color) {
         leds_f[map(pos, 52, 56, 50, 54)] = leds_f[map(pos, 52, 56, 58, 54)] = color;
       }
       leds_b1[map(pos, 52, 62, 0, 10)] = leds_b1[map(pos, 52, 62, 21, 11)] = color;
+      leds_b2[map(pos, 52, 62, 0, 10)] = leds_b2[map(pos, 52, 62, 21, 11)] = color;
       break;
     case 5:
       // 63-86 -> 4(0-23)
@@ -365,11 +408,11 @@ void buttons() {
       f_animation = 1;
   }
 
-  //  if (b == 2) {
-  //    b_animation++;
-  //    if (b_animation > NUM_B_ANIMATIONS)
-  //      b_animation = 1;
-  //  }
+  if (b == 2) {
+    mode++;
+    if (mode > MODES)
+      mode = 1;
+  }
   //  if (b == 3) {
   //    f_animation = 50;
   //    b_animation = 50;
