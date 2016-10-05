@@ -15,15 +15,15 @@
 
 #define DATA_PIN_F1 1
 #define NUM_LEDS_F1 24
-#define DATA_PIN_F2 0
+#define DATA_PIN_F2 2
 #define NUM_LEDS_F2 24
 
 #define DATA_PIN_F 6
 #define NUM_LEDS_F 60
 
-#define DATA_PIN_B1 5
+#define DATA_PIN_B1 7
 #define NUM_LEDS_B1 22
-#define DATA_PIN_B2 4
+#define DATA_PIN_B2 8
 #define NUM_LEDS_B2 22
 
 #define DATA_PIN_S1 10
