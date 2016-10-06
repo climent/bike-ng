@@ -1,3 +1,6 @@
+// Bike LEDs for burning man.
+// bike-ng.ino
+
 #include <FastLED.h>
 
 #define BUTTON_PIN 9
@@ -136,26 +139,27 @@ void mode1() {
       break;
     case 2:
       // transition
-      EVERY_N_MILLISECONDS(100) {
-        if (head < 130) head++;
-        if (head >= 129) start_time = millis();
-      }
-      if (skip_transitions == true || head >= 129) {
+      if (skip_transitions == true) {
         head = 130;
         f_animation++;
       }
-      allFillRainbow(head);
+      EVERY_N_MILLISECONDS(100) {
+        if (head < 130) head++;
+        if (head == 129) start_time = millis();
+      }
+      allFillRainbow(head, 0);
       break;
     case 3:
       now = millis();
       head = 130;
-      if (now - start_time > showtime) {
-        allFillRainbow(head);
+      if (now - start_time > showtime && auto_transition) {
+        f_animation++;
+        start_time = millis();
       }
+      allFillRainbow(head, 0);
       break;
     case 4:
-      //      theaterChase(head, false);
-      audioVuMeter(color_rgb);
+      theaterChase(head, 0, false);
       break;
     case 5:
       allAddGlitterBy(80);
@@ -220,16 +224,16 @@ bool allColor(CRGB color) {
   return true;
 }
 
-void allFillRainbow(int head) {
+void allFillRainbow(int head, int tail) {
   fill_rainbow(leds130, 130, gHue, 5);
-  for (int i = 0; i < head; i++) {
+  for (int i = tail; i < head; i++) {
     allFill130(i, leds130[i]);
   }
 }
 
-void theaterChase(int head, bool rainbow) {
+void theaterChase(int head, int tail, bool rainbow) {
   allFadeToBlackBy(100);
-  for (int i = 0; i < head; i = i + 3) {
+  for (int i = tail; i < head; i = i + 3) {
     if (i + cycle < head) {
       if (rainbow == true) {
         allFill130(i + cycle, CHSV(gHue + i, 255, 192));
