@@ -79,11 +79,17 @@ uint8_t gHue =  0;
 CRGB    color_rgb = CRGB::Blue;
 CHSV    color_hsv;
 int     cycle = 0;
+unsigned long start_time;
+unsigned long now;
+uint16_t showtime = 2000;
 
 int NUM_F_ANIMATIONS = 5;
 int f_animation = 1;
 int MODES = 2;
 int mode = 1;
+bool auto_transition = true;
+bool skip_transitions = false;
+int head = 0;
 
 void loop() {
   EVERY_N_MILLISECONDS( 100 ) {
@@ -95,7 +101,7 @@ void loop() {
   EVERY_N_MILLISECONDS( 5 ) {
     gHue++;  // slowly cycle the "base color" through the rainbow
   }
-  EVERY_N_MILLISECONDS(1) {
+  EVERY_N_MILLISECONDS( 1 ) {
     if (count < 87) {
       count++;
     } else {
@@ -120,18 +126,44 @@ void loop() {
 void mode1() {
   switch (f_animation) {
     case 1:
-      allFillRainbow();
+      // transition
+      if (allColor(CRGB::Black) && skip_transitions == false) {
+        allFadeToBlackBy(50);
+      } else {
+        head = 0;
+        f_animation++;
+      }
       break;
     case 2:
-      audioVuMeter(color_rgb);
+      // transition
+      EVERY_N_MILLISECONDS(100) {
+        if (head < 130) head++;
+        if (head >= 129) start_time = millis();
+      }
+      if (skip_transitions == true || head >= 129) {
+        head = 130;
+        f_animation++;
+      }
+      allFillRainbow(head);
       break;
     case 3:
-      allAddGlitterBy(80);
+      now = millis();
+      head = 130;
+      if (now - start_time > showtime) {
+        allFillRainbow(head);
+      }
       break;
     case 4:
-      cylon();
+      //      theaterChase(head, false);
+      audioVuMeter(color_rgb);
       break;
     case 5:
+      allAddGlitterBy(80);
+      break;
+    case 6:
+      cylon();
+      break;
+    case 10:
       switch (color) {
         case 0:
           color_rgb = CRGB::Blue;
@@ -158,35 +190,47 @@ void mode1() {
           //      allArrayFTB(count, color_rgb);
           //      break;
       }
+    case 200:
+      audioVuMeter(color_rgb);
+      break;
   }
 }
 
-void allFillRainbow() {
-  fill_rainbow(leds130, 130, gHue, 5);
+bool allColor(CRGB color) {
   for (int i = 0; i < 130; i++) {
+    switch (ledArray130[i]) {
+      case 1:
+        // 0-23
+        if (leds_f1[i] != color) return false;
+        if (leds_f2[i] != color) return false;
+        break;
+      case 2:
+        if (leds_f[i] != color) return false;
+        break;
+      case 3:
+        if (leds_b1[i] != color) return false;
+        if (leds_b2[i] != color) return false;
+        break;
+      case 4:
+        if (leds_s1[i] != color) return false;
+        if (leds_s2[i] != color) return false;
+        break;
+    }
+  }
+  return true;
+}
+
+void allFillRainbow(int head) {
+  fill_rainbow(leds130, 130, gHue, 5);
+  for (int i = 0; i < head; i++) {
     allFill130(i, leds130[i]);
-    //    switch (ledArray130[i]) {
-    //      case 1:
-    //        // 0-23
-    //        leds_f1[map(i, 0, 23, 23, 0)] = leds_f2[map(i, 0, 23, 23, 0)] = leds130[i];
-    //        break;
-    //      case 2:
-    //        leds_f[map(i, 24, 83, 0, 59)] = leds130[i];
-    //        break;
-    //      case 3:
-    //        leds_b1[map(i, 84, 105, 0, 21)] = leds_b2[map(i, 84, 105, 0, 21)] = leds130[i];
-    //        break;
-    //      case 4:
-    //        leds_s1[map(i, 106, 129, 0, 23)] = leds_s2[map(i, 106, 129, 0, 23)] = leds130[i];
-    //        break;
-    //    }
   }
 }
 
-void theaterChase(bool rainbow) {
-  allFadeToBlackBy(50);
-  for (int i = 0; i < 130; i = i + 3) {
-    if (i + cycle < 130) {
+void theaterChase(int head, bool rainbow) {
+  allFadeToBlackBy(100);
+  for (int i = 0; i < head; i = i + 3) {
+    if (i + cycle < head) {
       if (rainbow == true) {
         allFill130(i + cycle, CHSV(gHue + i, 255, 192));
       } else {
@@ -212,7 +256,6 @@ void allFill130(int pos, CRGB color) {
       leds_s1[map(pos, 106, 129, 0, 23)] = leds_s2[map(pos, 106, 129, 0, 23)] = color;
       break;
   }
-
 }
 
 void cylon() {
@@ -311,7 +354,6 @@ void allArrayBTF(int pos, CRGB color) {
 
 void audioVuMeter(CRGB color) {
   int level = vuMeter();
-  //  color = CRGB::Blue;
   allFadeToBlackBy(192);
   mapToLeds(leds_f1,  0, 23, level, color);
   mapToLeds(leds_f,   0, 21, level, color);
@@ -417,10 +459,9 @@ void buttons() {
   //    f_animation = 50;
   //    b_animation = 50;
   //  }
-  //  if (b == 4) {
-  //    f_animation = 100;
-  //    b_animation = 100;
-  //  }
+    if (b == 4) {
+      f_animation = 200;
+    }
 }
 
 
