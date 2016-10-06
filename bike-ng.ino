@@ -130,7 +130,11 @@ void mode1() {
   switch (f_animation) {
     case 1:
       // transition
-      if (allColor(CRGB::Black) && skip_transitions == false) {
+      if (skip_transitions == true) {
+        start_time = millis();
+        f_animation++;
+      }
+      if (allColor(CRGB::Black)) {
         allFadeToBlackBy(50);
       } else {
         head = 0;
@@ -140,12 +144,17 @@ void mode1() {
     case 2:
       // transition
       if (skip_transitions == true) {
+        start_time = millis();
         head = 130;
         f_animation++;
       }
-      EVERY_N_MILLISECONDS(100) {
+      EVERY_N_MILLISECONDS(10) {
         if (head < 130) head++;
         if (head == 129) start_time = millis();
+        if (head == 130) {
+          start_time = millis();
+          f_animation++;
+        }
       }
       allFillRainbow(head, 0);
       break;
