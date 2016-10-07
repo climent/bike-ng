@@ -76,6 +76,7 @@ void setup() {
 
 }
 
+// Variables that we need in order to run
 int     count = 0;
 int     color = 0;
 uint8_t gHue =  0;
@@ -84,15 +85,18 @@ CHSV    color_hsv;
 int     cycle = 0;
 unsigned long start_time;
 unsigned long now;
-uint16_t showtime = 2000;
-
-int NUM_F_ANIMATIONS = 5;
-int f_animation = 1;
-int MODES = 2;
-int mode = 1;
-bool auto_transition = true;
-bool skip_transitions = false;
 int head = 0;
+
+// Variables to control the flow of the animations
+uint16_t showtime = 2000;  // How long we stop in some animations
+int NUM_F_ANIMATIONS = 5;  // How many animations we cycle through
+int f_animation = 1;       // Initial animation
+int MODES = 2;             // Deprecated
+int mode = 1;              // Deprecated
+
+// Variables to control the transitions
+bool auto_transition = true;    // Automatically move to the next animation/transition
+bool skip_transition = false;   // Skip transitions and only output animations
 
 void loop() {
   EVERY_N_MILLISECONDS( 100 ) {
@@ -130,7 +134,7 @@ void mode1() {
   switch (f_animation) {
     case 1:
       // transition
-      if (skip_transitions == true) {
+      if (skip_transition == true) {
         start_time = millis();
         f_animation++;
       }
@@ -143,7 +147,7 @@ void mode1() {
       break;
     case 2:
       // transition
-      if (skip_transitions == true) {
+      if (skip_transition == true) {
         start_time = millis();
         head = 130;
         f_animation++;
