@@ -224,6 +224,16 @@ bool allColor(CRGB color) {
   return true;
 }
 
+void allBpm130(int head, int tail, int bpm)
+{
+  // colored stripes pulsing at a defined Beats-Per-Minute (BPM)
+  CRGBPalette16 palette = PartyColors_p;
+  uint8_t beat = beatsin8(bpm, 64, 255);
+  for ( int i = 0; i < head; i++) {
+    allFill130(i, ColorFromPalette(palette, gHue + (i * 2), beat - gHue + (i * 10)));
+  }
+}
+
 void allFillRainbow(int head, int tail) {
   fill_rainbow(leds130, 130, gHue, 5);
   for (int i = tail; i < head; i++) {
