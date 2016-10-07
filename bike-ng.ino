@@ -91,8 +91,6 @@ int head = 0;
 uint16_t showtime = 2000;  // How long we stop in some animations
 int NUM_F_ANIMATIONS = 5;  // How many animations we cycle through
 int f_animation = 1;       // Initial animation
-int MODES = 2;             // Deprecated
-int mode = 1;              // Deprecated
 
 // Variables to control the transitions
 bool auto_transition = true;    // Automatically move to the next animation/transition
@@ -118,14 +116,8 @@ void loop() {
     }
   }
 
-  switch (mode) {
-    case 1:
-      mode1();
-      break;
-    case 2:
-      mode1();
-      break;
-  }
+  mode1();
+
   FastLED.show();
   buttons();
 }
@@ -222,7 +214,7 @@ bool allColor(CRGB color) {
         if (leds_f2[i] != color) return false;
         break;
       case 2:
-        if (leds_f[i] != color) return false;
+        if (leds_f[i]  != color) return false;
         break;
       case 3:
         if (leds_b1[i] != color) return false;
@@ -242,15 +234,15 @@ void allBpm130(int head, int tail, int bpm)
   // colored stripes pulsing at a defined Beats-Per-Minute (BPM)
   CRGBPalette16 palette = PartyColors_p;
   uint8_t beat = beatsin8(bpm, 64, 255);
-  for ( int i = 0; i < head; i++) {
-    allFill130(i, ColorFromPalette(palette, gHue + (i * 2), beat - gHue + (i * 10)));
+  for ( int i = tail; i < head; i++) {
+    mapTo130(i, ColorFromPalette(palette, gHue + (i * 2), beat - gHue + (i * 10)));
   }
 }
 
 void allFillRainbow(int head, int tail) {
   fill_rainbow(leds130, 130, gHue, 5);
   for (int i = tail; i < head; i++) {
-    allFill130(i, leds130[i]);
+    mapTo130(i, leds130[i]);
   }
 }
 
@@ -259,15 +251,15 @@ void theaterChase(int head, int tail, bool rainbow) {
   for (int i = tail; i < head; i = i + 3) {
     if (i + cycle < head) {
       if (rainbow == true) {
-        allFill130(i + cycle, CHSV(gHue + i, 255, 192));
+        mapTo130(i + cycle, CHSV(gHue + i, 255, 192));
       } else {
-        allFill130(i + cycle, CRGB::White);
+        mapTo130(i + cycle, CRGB::White);
       }
     }
   }
 }
 
-void allFill130(int pos, CRGB color) {
+void mapTo130(int pos, CRGB color) {
   switch (ledArray130[pos]) {
     case 1:
       // 0-23
@@ -285,6 +277,34 @@ void allFill130(int pos, CRGB color) {
   }
 }
 
+void mapTo87(int pos, CRGB color) {
+  switch (ledArray87[pos]) {
+    case 1:
+      leds_f1[map(pos, 0, 23, 23, 0)] += CHSV( gHue, 255, 192);
+      leds_f2[map(pos, 0, 23, 23, 0)] += CHSV( gHue, 255, 192);
+      break;
+    case 2:
+      leds_f[map(pos, 24, 50, 22, 48)] += CHSV( gHue, 255, 192);
+      leds_f[map(pos, 24, 50, 21,  0)] += CHSV( gHue, 255, 192);
+      break;
+    case 3:
+      for (int i = 0; i < 11; i++) {
+        leds_f[map(i, 0, 10, 49, 59)] += CHSV( gHue, 255, 192);
+      }
+      break;
+    case 4:
+      leds_b1[map(pos, 52, 62,  0, 10)] += CHSV( gHue, 255, 192);
+      leds_b1[map(pos, 52, 62, 21, 11)] += CHSV( gHue, 255, 192);
+      leds_b2[map(pos, 52, 62,  0, 10)] += CHSV( gHue, 255, 192);
+      leds_b2[map(pos, 52, 62, 21, 11)] += CHSV( gHue, 255, 192);
+      break;
+    case 5:
+      leds_s1[map(pos, 63, 86,  0, 23)] += CHSV( gHue, 255, 192);
+      leds_s2[map(pos, 63, 86,  0, 23)] += CHSV( gHue, 255, 192);
+      break;
+  }
+}
+
 void cylon() {
   int gHue = 250; // pink, like my bike
   allFadeToBlackBy(5);
@@ -295,27 +315,7 @@ void cylon() {
     int loc = ledArray87[pos];
     int b1_pos;
     int f_pos;
-    switch (loc) {
-      case 1:
-        leds_f1[map(pos, 0, 23, 23, 0)] += CHSV( gHue, 255, 192);
-        break;
-      case 2:
-        leds_f[map(pos, 24, 50, 22, 48)] += CHSV( gHue, 255, 192);
-        leds_f[map(pos, 24, 50, 21,  0)] += CHSV( gHue, 255, 192);
-        break;
-      case 3:
-        for (int i = 0; i < 11; i++) {
-          leds_f[map(i, 0, 10, 49, 59)] += CHSV( gHue, 255, 192);
-        }
-        break;
-      case 4:
-        leds_b1[map(pos, 52, 62,  0, 10)] += CHSV( gHue, 255, 192);
-        leds_b1[map(pos, 52, 62, 21, 11)] += CHSV( gHue, 255, 192);
-        break;
-      case 5:
-        leds_s1[map(pos, 63, 86,  0, 23)] += CHSV( gHue, 255, 192);
-        break;
-    }
+    mapTo87(loc, CHSV(gHue, 255, 192));
   }
 }
 
@@ -478,17 +478,14 @@ void buttons() {
   }
 
   if (b == 2) {
-    mode++;
-    if (mode > MODES)
-      mode = 1;
   }
   //  if (b == 3) {
   //    f_animation = 50;
   //    b_animation = 50;
   //  }
-    if (b == 4) {
-      f_animation = 200;
-    }
+  if (b == 4) {
+    f_animation = 200;
+  }
 }
 
 
