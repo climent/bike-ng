@@ -147,7 +147,7 @@ void loop() {
 
   //mode1();
   demo();
-//  allTwinkleMapPixels();
+  //  allTwinkleMapPixels();
 
   FastLED.show();
   buttons();
@@ -253,7 +253,43 @@ void demo() {
       break;
     case 6:
       cylon();
-//      audioVuMeter(color_rgb);
+      now = millis();
+      if (now - start_time > 3000) {
+        animation++;
+      }
+      //      audioVuMeter(color_rgb);
+      break;
+    case 7:
+      allFadeToBlackBy(10);
+      if (allColor(CRGB::Black)) {
+        start_time = millis();
+        animation++;
+        head = 0;
+      }
+      break;
+    case 8:
+    now = millis();
+      EVERY_N_MILLISECONDS(20) {
+        if (head < 130) head++;
+        if (head == 129) {
+          start_time = millis();
+        }
+      }
+      allBpm130(head, 0, 62);
+      if (now - start_time > 3000) {
+        animation++;
+        head = 0;
+      }
+      break;
+    case 9:
+      EVERY_N_MILLISECONDS(20) {
+        if (head < 130) head++;
+        if (head == 129) {
+          start_time = millis();
+        }
+      }
+      allBpm130(130, head, 62);
+      theaterChase(head, 0, false);
       break;
     case 93:
       now = millis();
@@ -316,15 +352,15 @@ bool allColor(CRGB color) {
         if (leds_f2[i] != color) return false;
         break;
       case 2:
-        if (leds_f[i-24]  != color) return false;
+        if (leds_f[i - 24]  != color) return false;
         break;
       case 3:
-        if (leds_b1[i-24-60] != color) return false;
-        if (leds_b2[i-24-60] != color) return false;
+        if (leds_b1[i - 24 - 60] != color) return false;
+        if (leds_b2[i - 24 - 60] != color) return false;
         break;
       case 4:
-        if (leds_s1[i-24-60-22] != color) return false;
-        if (leds_s2[i-24-60-22] != color) return false;
+        if (leds_s1[i - 24 - 60 - 22] != color) return false;
+        if (leds_s2[i - 24 - 60 - 22] != color) return false;
         break;
     }
   }
@@ -511,7 +547,7 @@ void allArrayBTF(int pos, CRGB color) {
 
 void audioVuMeter(CRGB color) {
   int level = vuMeter();
-  allFadeToBlackBy(192);
+  allFadeToBlackBy(240);
   mapToLeds(leds_f1,  0, 23, level, color);
   mapToLeds(leds_f,   0, 21, level, color);
   mapToLeds(leds_f,  22, 48, level, color);
@@ -614,7 +650,7 @@ void buttons() {
   //    b_animation = 50;
   //  }
   if (b == 4) {
-    f_animation = 200;
+    animation = 200;
   }
 }
 
