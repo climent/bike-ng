@@ -80,12 +80,13 @@ void setup() {
 int     count = 0;
 int     color = 0;
 uint8_t gHue =  0;
-CRGB    color_rgb = CRGB::Blue;
-CHSV    color_hsv;
 int     cycle = 0;
+int     head =  0;
 unsigned long start_time;
 unsigned long now;
-int head = 0;
+
+CRGB    color_rgb = CRGB::Blue;
+CHSV    color_hsv;
 
 // Variables to control the flow of the animations
 uint16_t showtime = 2000;  // How long we stop in some animations
@@ -93,8 +94,9 @@ int NUM_F_ANIMATIONS = 5;  // How many animations we cycle through
 int f_animation = 1;       // Initial animation
 
 // Variables to control the transitions
-bool auto_transition = true;    // Automatically move to the next animation/transition
+bool auto_transition = false;    // Automatically move to the next animation/transition
 bool skip_transition = false;   // Skip transitions and only output animations
+bool t_speed         = 1000;
 
 void loop() {
   EVERY_N_MILLISECONDS( 100 ) {
@@ -144,7 +146,7 @@ void mode1() {
         head = 130;
         f_animation++;
       }
-      EVERY_N_MILLISECONDS(10) {
+      EVERY_N_MILLISECONDS(50) {
         if (head < 130) head++;
         if (head == 129) start_time = millis();
         if (head == 130) {
@@ -152,7 +154,8 @@ void mode1() {
           f_animation++;
         }
       }
-      allFillRainbow(head, 0);
+//      allFillRainbow(head, 0);
+      allBpm130(head, 0, 62);
       break;
     case 3:
       now = millis();
@@ -161,7 +164,8 @@ void mode1() {
         f_animation++;
         start_time = millis();
       }
-      allFillRainbow(head, 0);
+      //      allFillRainbow(head, 0);
+      allBpm130(head, 0, 62);
       break;
     case 4:
       theaterChase(head, 0, false);
