@@ -77,25 +77,26 @@ CRGB leds_s2[NUM_LEDS_S2];
 
 void setup() {
   // put your setup code here, to run once:
-  FastLED.addLeds<NEOPIXEL, DATA_PIN_F1>(leds_f1, NUM_LEDS_F1);
-  FastLED.addLeds<NEOPIXEL, DATA_PIN_F2>(leds_f2, NUM_LEDS_F2);
-  FastLED.addLeds<NEOPIXEL, DATA_PIN_F>(leds_f, NUM_LEDS_F);
-  FastLED.addLeds<NEOPIXEL, DATA_PIN_B1>(leds_b1, NUM_LEDS_B1);
-  FastLED.addLeds<NEOPIXEL, DATA_PIN_B2>(leds_b2, NUM_LEDS_B2);
-  FastLED.addLeds<NEOPIXEL, DATA_PIN_S1>(leds_s1, NUM_LEDS_S1);
-  FastLED.addLeds<NEOPIXEL, DATA_PIN_S2>(leds_s2, NUM_LEDS_S2);
+  FastLED.addLeds<NEOPIXEL, DATA_PIN_F1>(leds_f1, NUM_LEDS_F1).setCorrection(TypicalLEDStrip);;
+  FastLED.addLeds<NEOPIXEL, DATA_PIN_F2>(leds_f2, NUM_LEDS_F2).setCorrection(TypicalLEDStrip);;
+  FastLED.addLeds<NEOPIXEL, DATA_PIN_F>(leds_f, NUM_LEDS_F).setCorrection(TypicalLEDStrip);;
+  FastLED.addLeds<NEOPIXEL, DATA_PIN_B1>(leds_b1, NUM_LEDS_B1).setCorrection(TypicalLEDStrip);;
+  FastLED.addLeds<NEOPIXEL, DATA_PIN_B2>(leds_b2, NUM_LEDS_B2).setCorrection(TypicalLEDStrip);;
+  FastLED.addLeds<NEOPIXEL, DATA_PIN_S1>(leds_s1, NUM_LEDS_S1).setCorrection(TypicalLEDStrip);;
+  FastLED.addLeds<NEOPIXEL, DATA_PIN_S2>(leds_s2, NUM_LEDS_S2).setCorrection(TypicalLEDStrip);;
   FastLED.setBrightness(100);
 
-  // Initialize pixel state to dim:
+  // Initialize pixel state to SteadyDim:
   memset(ledState200, 200, SteadyDim);
+
   //initialize all to black:
-  memset(leds_f1, NUM_LEDS_F1, CRGB::Black); // initialize all the pixels to SteadyDim.
-  memset(leds_f2, NUM_LEDS_F2, CRGB::Black); // initialize all the pixels to SteadyDim.
-  memset(leds_f,  NUM_LEDS_F,  CRGB::Black); // initialize all the pixels to SteadyDim.
-  memset(leds_b1, NUM_LEDS_B1, CRGB::Black); // initialize all the pixels to SteadyDim.
-  memset(leds_b2, NUM_LEDS_B2, CRGB::Black); // initialize all the pixels to SteadyDim.
-  memset(leds_s1, NUM_LEDS_S1, CRGB::Black); // initialize all the pixels to SteadyDim.
-  memset(leds_s2, NUM_LEDS_S2, CRGB::Black); // initialize all the pixels to SteadyDim.
+  memset(leds_f1, NUM_LEDS_F1, CRGB::Black);
+  memset(leds_f2, NUM_LEDS_F2, CRGB::Black);
+  memset(leds_f,  NUM_LEDS_F,  CRGB::Black);
+  memset(leds_b1, NUM_LEDS_B1, CRGB::Black);
+  memset(leds_b2, NUM_LEDS_B2, CRGB::Black);
+  memset(leds_s1, NUM_LEDS_S1, CRGB::Black);
+  memset(leds_s2, NUM_LEDS_S2, CRGB::Black);
 
   // Initialize the button
   pinMode(BUTTON_PIN, INPUT_PULLUP);
@@ -103,12 +104,19 @@ void setup() {
 
 }
 
-// Variables that we need in order to run
-int     count = 0;
-int     color = 0;
-uint8_t gHue =  0;
-int     cycle = 0;
-int     head =  0;
+//* Turnable knobs to change the behavior of the animations
+
+#define GHUE_SPEED 5        // How fast the rainbow colors change
+#define CYCLE_SPEED 100     // How fast we move the theater chase animation
+#define SHOWTIME 2000       // How long we stop in some animations
+#define NUM_M_ANIMATIONS 9  // How many animations we cycle through
+
+//* Variables that we need in order to run
+uint8_t count =        0;
+uint8_t color =        0;
+uint8_t gHue =         0;
+uint8_t cycle =        0;
+uint8_t head =         0;
 unsigned long start_time;
 unsigned long now;
 
@@ -116,9 +124,8 @@ CRGB    color_rgb = CRGB::Blue;
 CHSV    color_hsv;
 
 // Variables to control the flow of the animations
-uint16_t showtime = 2000;  // How long we stop in some animations
-int NUM_F_ANIMATIONS = 9;  // How many animations we cycle through
-int f_animation = 1;       // Initial animation
+int m_animation = 1;       // Initial animation
+int next_animation;        // Next animation
 
 // Variables to control the transitions
 bool auto_transition = false;    // Automatically move to the next animation/transition
@@ -126,13 +133,15 @@ bool skip_transition = false;   // Skip transitions and only output animations
 bool t_speed         = 1000;
 
 void loop() {
-  EVERY_N_MILLISECONDS( 100 ) {
+  // cycle controls the theater chase animation
+  EVERY_N_MILLISECONDS( CYCLE_SPEED ) {
     cycle++;
     if (cycle == 3) {
       cycle = 0;
     }
   }
-  EVERY_N_MILLISECONDS( 5 ) {
+  // gHue controls the rainbow
+  EVERY_N_MILLISECONDS( GHUE_SPEED ) {
     gHue++;  // slowly cycle the "base color" through the rainbow
   }
   EVERY_N_MILLISECONDS( 1 ) {
@@ -145,12 +154,54 @@ void loop() {
     }
   }
 
-  //mode1();
-  demo();
+  switch (mode) {
+    case 1:
+      mode1();
+      break;
+    case 2:
+      demo();
+      break;
+    default:
+      mode1();
+      break;
+  }
   //  allTwinkleMapPixels();
 
   FastLED.show();
   buttons();
+}
+
+void mode1() {
+  switch (m_animation) {
+    case 1:
+      if (animation == next_animation) {
+        if (head < 130) head++;
+        fillRainbow(head, 0);
+      } else {
+        allFadeToBlackBy(10);
+        if (allColor(CRGB::Black)) {
+          m_animation = next_animation;
+          head = 0;
+        }
+      }
+      break;
+    case 2:
+      if (animation == next_animation) {
+        if (head < 130) head++;
+        allTwinkleMapPixels(2);
+      } else {
+        allFadeToBlackBy(10);
+        if (allColor(CRGB::Black)) {
+          m_animation = next_animation;
+          head = 0;
+        }
+      }
+      break;
+    case 3:
+      break;
+    default:
+      break;
+  }
 }
 
 // List of patterns to cycle through.  Each is defined as a separate function below.
@@ -638,26 +689,6 @@ void addGlitter(CRGB * leds, uint8_t num_leds, fract8 chanceOfGlitter) {
 }
 
 
-void buttons() {
-  int b = checkButton();
-  if (b == 1) {
-    animation++;
-    head = 0;
-    if (animation > NUM_F_ANIMATIONS)
-      animation = 1;
-  }
-
-  if (b == 2) {
-  }
-  if (b == 3) {
-    animation = 100;
-    //      b_animation = 50;
-  }
-  if (b == 4) {
-    animation = 200;
-  }
-}
-
 void allTwinkleMapPixels(int fade) {
   //  fadeToBlackBy( leds, num_leds, 20);
   random16_add_entropy(random());
@@ -772,3 +803,26 @@ int checkButton()
   buttonLast = buttonVal;
   return event;
 }
+
+void buttons() {
+  int b = checkButton();
+  if (b == 1) {
+    next_animation++;
+    head = 0;
+    if (next_animation > NUM_F_ANIMATIONS)
+      next_animation = 1;
+  }
+
+  if (b == 2) {
+    mode++;
+    if (mode > 2) mode = 1;
+  }
+  if (b == 3) {
+    animation = 100;
+    //      b_animation = 50;
+  }
+  if (b == 4) {
+    animation = 200;
+  }
+}
+
