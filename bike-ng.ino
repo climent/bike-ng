@@ -84,7 +84,7 @@ void setup() {
   FastLED.addLeds<NEOPIXEL, DATA_PIN_B2>(leds_b2, NUM_LEDS_B2);
   FastLED.addLeds<NEOPIXEL, DATA_PIN_S1>(leds_s1, NUM_LEDS_S1);
   FastLED.addLeds<NEOPIXEL, DATA_PIN_S2>(leds_s2, NUM_LEDS_S2);
-  //  FastLED.setBrightness(100);
+  FastLED.setBrightness(100);
 
   // Initialize pixel state to dim:
   memset(ledState200, 200, SteadyDim);
@@ -193,7 +193,6 @@ void demo() {
         next();
         animation++;
       }
-      //allBpm130(head, 0, 62);
       fillRainbow(head, 0);
       break;
     case 3:
@@ -228,33 +227,32 @@ void demo() {
       allFillRainbow();
       allFadeToBlackBy(fader);
       allAddGlitterBy(glitter);
-      if (now - start_time > 1000 && fader >= 254) {
+      if (now - start_time > 3000 && fader >= 254) {
         animation++;
       }
       break;
     case 5:
-      EVERY_N_MILLISECONDS(10) {
-        if (fader > 0 ) {
+      EVERY_N_MILLISECONDS(50) {
+        if (fader > 2) {
           fader--;
         }
+        if (glitter > 0) {
+          glitter--;
+        }
       }
-      if (fader != 0) {
-        allFadeToBlackBy(fader);
-      }
-      if (fader == 1) {
-        start_time = millis();
-      }
-      allAddGlitterBy(glitter);
       now = millis();
-      if (allColor(CRGB::White) && fader == 0) {
-        start_time = millis();
+      allTwinkleMapPixels(fader);
+      allAddGlitterBy(glitter);
+      if (fader == 2 && now - start_time > 3000) {
         animation++;
+        start_time = millis();
       }
       break;
     case 6:
       cylon();
+      allAddGlitterBy(10);
       now = millis();
-      if (now - start_time > 3000) {
+      if (now - start_time > 5000) {
         animation++;
       }
       //      audioVuMeter(color_rgb);
@@ -268,7 +266,7 @@ void demo() {
       }
       break;
     case 8:
-    now = millis();
+      now = millis();
       EVERY_N_MILLISECONDS(20) {
         if (head < 130) head++;
         if (head == 129) {
@@ -288,29 +286,30 @@ void demo() {
           start_time = millis();
         }
       }
+      now = millis();
       allBpm130(130, head, 62);
       theaterChase(head, 0, false);
-      break;
-    case 93:
-      now = millis();
-      head = 130;
-      if (now - start_time > showtime && auto_transition) {
-        f_animation++;
-        start_time = millis();
+      if (now - start_time > 5000 && head == 130) {
+        animation++;
+        head = 0;
       }
-      //      allFillRainbow(head, 0);
-      allBpm130(head, 0, 62);
-      break;
-    case 94:
-      theaterChase(head, 0, false);
-      break;
-    case 95:
-      allAddGlitterBy(80);
-      break;
-    case 96:
-      cylon();
       break;
     case 10:
+      EVERY_N_MILLISECONDS(20) {
+        if (head < 130) head++;
+        if (head == 129) {
+          start_time = millis();
+        }
+      }
+      now = millis();
+      theaterChase(130, 0, false);
+      theaterChase(head, 0, true);
+      if (now - start_time > 5000 && head == 130) {
+        animation = 2;
+        head = 0;
+      }
+      break;
+    case 11:
       switch (color) {
         case 0:
           color_rgb = CRGB::Blue;
@@ -337,6 +336,10 @@ void demo() {
           //      allArrayFTB(count, color_rgb);
           //      break;
       }
+      break;
+    case 100:
+      allTwinkleMapPixels(2);
+      break;
     case 200:
       audioVuMeter(color_rgb);
       break;
@@ -639,22 +642,23 @@ void buttons() {
   int b = checkButton();
   if (b == 1) {
     animation++;
+    head = 0;
     if (animation > NUM_F_ANIMATIONS)
       animation = 1;
   }
 
   if (b == 2) {
   }
-  //  if (b == 3) {
-  //    f_animation = 50;
-  //    b_animation = 50;
-  //  }
+  if (b == 3) {
+    animation = 100;
+    //      b_animation = 50;
+  }
   if (b == 4) {
     animation = 200;
   }
 }
 
-void allTwinkleMapPixels() {
+void allTwinkleMapPixels(int fade) {
   //  fadeToBlackBy( leds, num_leds, 20);
   random16_add_entropy(random());
   for ( uint16_t i = 0; i < 200; i++) {
@@ -683,7 +687,7 @@ void allTwinkleMapPixels() {
         ledState200[i] = SteadyDim;
       } else {
         // otherwise, just keep dimming it down:
-        leds200[i] -= CRGB(2, 2, 2);
+        leds200[i] -= CRGB(fade, fade, fade);
       }
     }
     mapTo200(i, leds200[i]);
