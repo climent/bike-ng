@@ -109,7 +109,7 @@ void setup() {
 #define GHUE_SPEED 5        // How fast the rainbow colors change
 #define CYCLE_SPEED 100     // How fast we move the theater chase animation
 #define SHOWTIME 2000       // How long we stop in some animations
-#define NUM_M_ANIMATIONS 9  // How many animations we cycle through
+#define NUM_M_ANIMATIONS 2  // How many animations we cycle through
 
 //* Variables that we need in order to run
 uint8_t count =        0;
@@ -117,6 +117,7 @@ uint8_t color =        0;
 uint8_t gHue =         0;
 uint8_t cycle =        0;
 uint8_t head =         0;
+uint8_t mode =         1;
 unsigned long start_time;
 unsigned long now;
 
@@ -125,7 +126,7 @@ CHSV    color_hsv;
 
 // Variables to control the flow of the animations
 int m_animation = 1;       // Initial animation
-int next_animation;        // Next animation
+int next_animation = 1;    // Next animation
 
 // Variables to control the transitions
 bool auto_transition = false;    // Automatically move to the next animation/transition
@@ -174,7 +175,7 @@ void loop() {
 void mode1() {
   switch (m_animation) {
     case 1:
-      if (animation == next_animation) {
+      if (m_animation == next_animation) {
         if (head < 130) head++;
         fillRainbow(head, 0);
       } else {
@@ -182,14 +183,18 @@ void mode1() {
         if (allColor(CRGB::Black)) {
           m_animation = next_animation;
           head = 0;
+          memset(ledState200, 200, SteadyDim);
         }
       }
       break;
     case 2:
-      if (animation == next_animation) {
+      if (m_animation == next_animation) {
         if (head < 130) head++;
         allTwinkleMapPixels(2);
       } else {
+        for (int i = 0; i< 200 ; i++) {
+          leds200[i] = CRGB::Black;
+        }
         allFadeToBlackBy(10);
         if (allColor(CRGB::Black)) {
           m_animation = next_animation;
@@ -809,7 +814,7 @@ void buttons() {
   if (b == 1) {
     next_animation++;
     head = 0;
-    if (next_animation > NUM_F_ANIMATIONS)
+    if (next_animation > NUM_M_ANIMATIONS)
       next_animation = 1;
   }
 
