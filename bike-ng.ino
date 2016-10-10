@@ -87,16 +87,16 @@ void setup() {
   FastLED.setBrightness(100);
 
   // Initialize pixel state to SteadyDim:
-  memset(ledState200, 200, SteadyDim);
+  memset(ledState200, SteadyDim, 200);
 
   //initialize all to black:
-  memset(leds_f1, NUM_LEDS_F1, CRGB::Black);
-  memset(leds_f2, NUM_LEDS_F2, CRGB::Black);
-  memset(leds_f,  NUM_LEDS_F,  CRGB::Black);
-  memset(leds_b1, NUM_LEDS_B1, CRGB::Black);
-  memset(leds_b2, NUM_LEDS_B2, CRGB::Black);
-  memset(leds_s1, NUM_LEDS_S1, CRGB::Black);
-  memset(leds_s2, NUM_LEDS_S2, CRGB::Black);
+//  memset(leds_f1, NUM_LEDS_F1, CRGB::Black);
+//  memset(leds_f2, NUM_LEDS_F2, CRGB::Black);
+//  memset(leds_f,  NUM_LEDS_F,  CRGB::Black);
+//  memset(leds_b1, NUM_LEDS_B1, CRGB::Black);
+//  memset(leds_b2, NUM_LEDS_B2, CRGB::Black);
+//  memset(leds_s1, NUM_LEDS_S1, CRGB::Black);
+//  memset(leds_s2, NUM_LEDS_S2, CRGB::Black);
 
   // Initialize the button
   pinMode(BUTTON_PIN, INPUT_PULLUP);
@@ -162,11 +162,16 @@ void loop() {
     case 2:
       demo();
       break;
+    case 3:
+      audioVuMeter(color_rgb);
+      break;
+    case 4:
+      allFadeToBlackBy(50);
+      break;
     default:
       mode1();
       break;
   }
-  //  allTwinkleMapPixels();
 
   FastLED.show();
   buttons();
@@ -379,25 +384,19 @@ void demo() {
           color_rgb = CRGB::Red;
           allArrayBTF(count, color_rgb);
           break;
-          //    case 3:
-          //      color_rgb = CRGB::Blue;
-          //      allArrayFTB(count, color_rgb);
-          //      break;
-          //    case 4:
-          //      color_rgb = CRGB::Green;
-          //      allArrayFTB(count, color_rgb);
-          //      break;
-          //    case 5:
-          //      color_rgb = CRGB::Red;
-          //      allArrayFTB(count, color_rgb);
-          //      break;
+        case 3:
+          color_rgb = CRGB::Blue;
+          allArrayFTB(count, color_rgb);
+          break;
+        case 4:
+          color_rgb = CRGB::Green;
+          allArrayFTB(count, color_rgb);
+          break;
+        case 5:
+          color_rgb = CRGB::Red;
+          allArrayFTB(count, color_rgb);
+          break;
       }
-      break;
-    case 100:
-      allTwinkleMapPixels(2);
-      break;
-    case 200:
-      audioVuMeter(color_rgb);
       break;
   }
 }
@@ -812,22 +811,21 @@ int checkButton()
 void buttons() {
   int b = checkButton();
   if (b == 1) {
+    mode = 1;
     next_animation++;
     head = 0;
     if (next_animation > NUM_M_ANIMATIONS)
       next_animation = 1;
   }
-
   if (b == 2) {
     mode++;
     if (mode > 2) mode = 1;
   }
   if (b == 3) {
-    animation = 100;
-    //      b_animation = 50;
+    mode = 3;
   }
   if (b == 4) {
-    animation = 200;
+    mode = 4;
   }
 }
 
