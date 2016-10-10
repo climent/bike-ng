@@ -30,41 +30,41 @@
 #define NUM_LEDS_B2 22
 
 #define DATA_PIN_S1 10
-#define NUM_LEDS_S1 24
+#define NUM_LEDS_S1 30
 #define DATA_PIN_S2 11
-#define NUM_LEDS_S2 24
+#define NUM_LEDS_S2 30
 
-const int ledArray87[87] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+const int ledArray93[93] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                             2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
                             3,
                             4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-                            5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
+                            5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
                            };
 
-const int ledArray130[130] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+const int ledArray136[136] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                               2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
                               2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
                               3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-                              4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+                              4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
                              };
 
-const int ledArray200[200] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+const int ledArray212[212] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                               2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
                               3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
                               3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
                               4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
                               5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
-                              6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-                              7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7
+                              6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+                              7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
                              };
 
 // Definitions for twinkles.
 #define PEAK_COLOR CRGB(100,100,100)
-int ledState200[200];
+int ledState212[212];
 enum {SteadyDim, GettingBrighter, GettingDimmerAgain};
 
-CRGB leds200[200];
-CRGB leds130[130];
+CRGB leds212[212];
+CRGB leds136[136];
 
 CRGB leds_f1[NUM_LEDS_F1];
 CRGB leds_f2[NUM_LEDS_F2];
@@ -87,7 +87,7 @@ void setup() {
   FastLED.setBrightness(100);
 
   // Initialize pixel state to SteadyDim:
-  memset(ledState200, 200, SteadyDim);
+  memset(ledState212, 212, SteadyDim);
 
   //initialize all to black:
   memset(leds_f1, NUM_LEDS_F1, CRGB::Black);
@@ -146,7 +146,7 @@ void loop() {
     gHue++;  // slowly cycle the "base color" through the rainbow
   }
   EVERY_N_MILLISECONDS( 1 ) {
-    if (count < 87) {
+    if (count < 93) {
       count++;
     } else {
       count = 0;
@@ -176,24 +176,24 @@ void mode1() {
   switch (m_animation) {
     case 1:
       if (m_animation == next_animation) {
-        if (head < 130) head++;
+        if (head < 136) head++;
         fillRainbow(head, 0);
       } else {
         allFadeToBlackBy(10);
         if (allColor(CRGB::Black)) {
           m_animation = next_animation;
           head = 0;
-          memset(ledState200, 200, SteadyDim);
+          memset(ledState212, 212, SteadyDim);
         }
       }
       break;
     case 2:
       if (m_animation == next_animation) {
-        if (head < 130) head++;
+        if (head < 136) head++;
         allTwinkleMapPixels(2);
       } else {
-        for (int i = 0; i < 200 ; i++) {
-          leds200[i] = CRGB::Black;
+        for (int i = 0; i < 212 ; i++) {
+          leds212[i] = CRGB::Black;
         }
         allFadeToBlackBy(10);
         if (allColor(CRGB::Black)) {
@@ -211,7 +211,7 @@ void mode1() {
 
 // List of patterns to cycle through.  Each is defined as a separate function below.
 //typedef void (*patternList[])();
-//patternList gPatterns = { allFillRainbow, allBpm130, , sinelon, juggle, bpm };
+//patternList gPatterns = { allFillRainbow, allBpm13, , sinelon, juggle, bpm };
 //
 //void mode3() {
 //  gPatterns[gCurrentPatternNumber]();
@@ -239,13 +239,13 @@ void demo() {
     case 2:
       glitter = 0;
       EVERY_N_MILLISECONDS(10) {
-        if (head < 130) head++;
-        if (head == 129) {
+        if (head < 136) head++;
+        if (head == 135) {
           start_time = millis();
         }
       }
       now = millis();
-      if (now - start_time > next_delay && head == 130) {
+      if (now - start_time > next_delay && head == 136) {
         next();
         animation++;
       }
@@ -324,43 +324,43 @@ void demo() {
     case 8:
       now = millis();
       EVERY_N_MILLISECONDS(20) {
-        if (head < 130) head++;
-        if (head == 129) {
+        if (head < 136) head++;
+        if (head == 135) {
           start_time = millis();
         }
       }
-      allBpm130(head, 0, 62);
-      if (now - start_time > 3000 && head == 130) {
+      allBpm136(head, 0, 62);
+      if (now - start_time > 3000 && head == 136) {
         animation++;
         head = 0;
       }
       break;
     case 9:
       EVERY_N_MILLISECONDS(20) {
-        if (head < 130) head++;
-        if (head == 129) {
+        if (head < 136) head++;
+        if (head == 135) {
           start_time = millis();
         }
       }
       now = millis();
-      allBpm130(130, head, 62);
+      allBpm136(136, head, 62);
       theaterChase(head, 0, false);
-      if (now - start_time > 5000 && head == 130) {
+      if (now - start_time > 5000 && head == 136) {
         animation++;
         head = 0;
       }
       break;
     case 10:
       EVERY_N_MILLISECONDS(20) {
-        if (head < 130) head++;
-        if (head == 129) {
+        if (head < 136) head++;
+        if (head == 135) {
           start_time = millis();
         }
       }
       now = millis();
-      theaterChase(130, 0, false);
+      theaterChase(136, 0, false);
       theaterChase(head, 0, true);
-      if (now - start_time > 5000 && head == 130) {
+      if (now - start_time > 5000 && head == 136) {
         animation = 2;
         head = 0;
       }
@@ -403,8 +403,8 @@ void demo() {
 }
 
 bool allColor(CRGB color) {
-  for (int i = 0; i < 130; i++) {
-    switch (ledArray130[i]) {
+  for (int i = 0; i < 136; i++) {
+    switch (ledArray136[i]) {
       case 1:
         // 0-23
         if (leds_f1[i] != color) return false;
@@ -426,24 +426,26 @@ bool allColor(CRGB color) {
   return true;
 }
 
-void allBpm130(int head, int tail, int bpm)
+void allBpm136(int head, int tail, int bpm)
 {
   // colored stripes pulsing at a defined Beats-Per-Minute (BPM)
   CRGBPalette16 palette = PartyColors_p;
   uint8_t beat = beatsin8(bpm, 64, 255);
   for ( int i = tail; i < head; i++) {
-    mapTo130(i, ColorFromPalette(palette, gHue + (i * 2), beat - gHue + (i * 10)));
+    mapTo136(i, ColorFromPalette(palette, gHue + (i * 2), beat - gHue + (i * 10)));
   }
 }
 
+
+// FIXME()
 void allFillRainbow() {
-  fillRainbow(130, 0);
+  fillRainbow(136, 0);
 }
 
 void fillRainbow(int head, int tail) {
-  fill_rainbow(leds130, 130, gHue, 5);
+  fill_rainbow(leds136, 136, gHue, 2);
   for (int i = tail; i < head; i++) {
-    mapTo130(i, leds130[i]);
+    mapTo136(i, leds136[map(i, 0, 135, 135, 0)]);
   }
 }
 
@@ -452,16 +454,16 @@ void theaterChase(int head, int tail, bool rainbow) {
   for (int i = tail; i < head; i = i + 3) {
     if (i + cycle < head) {
       if (rainbow == true) {
-        mapTo130(i + cycle, CHSV(gHue + i, 255, 192));
+        mapTo136(i + cycle, CHSV(gHue + i, 255, 192));
       } else {
-        mapTo130(i + cycle, CRGB::White);
+        mapTo136(i + cycle, CRGB::White);
       }
     }
   }
 }
 
-void mapTo200(int pos, CRGB color) {
-  switch (ledArray200[pos]) {
+void mapTo212(int pos, CRGB color) {
+  switch (ledArray212[pos]) {
     case 1:
       leds_f1[pos] = color;
       break;
@@ -481,13 +483,13 @@ void mapTo200(int pos, CRGB color) {
       leds_s1[pos - 24 - 24 - 60 - 22 - 22] = color;
       break;
     case 7:
-      leds_s2[pos - 24 - 24 - 60 - 22 - 22 - 24] = color;
+      leds_s2[pos - 24 - 24 - 60 - 22 - 22 - 30] = color;
       break;
   }
 }
 
-void mapTo130(int pos, CRGB color) {
-  switch (ledArray130[pos]) {
+void mapTo136(int pos, CRGB color) {
+  switch (ledArray136[pos]) {
     case 1:
       leds_f1[map(pos, 0, 23, 23, 0)] = leds_f2[map(pos, 0, 23, 23, 0)] = color;
       break;
@@ -498,13 +500,13 @@ void mapTo130(int pos, CRGB color) {
       leds_b1[map(pos, 84, 105, 0, 21)] = leds_b2[map(pos, 84, 105, 0, 21)] = color;
       break;
     case 4:
-      leds_s1[map(pos, 106, 129, 0, 23)] = leds_s2[map(pos, 106, 129, 0, 23)] = color;
+      leds_s1[map(pos, 106, 135, 0, 29)] = leds_s2[map(pos, 106, 135, 0, 29)] = color;
       break;
   }
 }
 
-void mapTo87(int pos, CRGB color) {
-  switch (ledArray87[pos]) {
+void mapTo93(int pos, CRGB color) {
+  switch (ledArray93[pos]) {
     case 1:
       leds_f1[map(pos, 0, 23, 23, 0)] += CHSV( gHue, 255, 192);
       leds_f2[map(pos, 0, 23, 23, 0)] += CHSV( gHue, 255, 192);
@@ -525,8 +527,8 @@ void mapTo87(int pos, CRGB color) {
       leds_b2[map(pos, 52, 62, 21, 11)] += CHSV( gHue, 255, 192);
       break;
     case 5:
-      leds_s1[map(pos, 63, 86,  0, 23)] += CHSV( gHue, 255, 192);
-      leds_s2[map(pos, 63, 86,  0, 23)] += CHSV( gHue, 255, 192);
+      leds_s1[map(pos, 63, 92,  0, 29)] += CHSV( gHue, 255, 192);
+      leds_s2[map(pos, 63, 92,  0, 29)] += CHSV( gHue, 255, 192);
       break;
   }
 }
@@ -534,17 +536,17 @@ void mapTo87(int pos, CRGB color) {
 void cylon() {
   int gHue = 250; // pink, like my bike
   allFadeToBlackBy(5);
-  int j = beatsin8(20, 0, 87);
+  int j = beatsin8(20, 0, 93);
   for (int pos = j - 1 ; pos < j + 1 ; pos++) {
     if (pos < 0) pos = 0;
-    if (pos > 87) pos = 87;
-    int loc = ledArray87[pos];
-    mapTo87(pos, CHSV(gHue, 255, 192));
+    if (pos > 93) pos = 93;
+    int loc = ledArray93[pos];
+    mapTo93(pos, CHSV(gHue, 255, 192));
   }
 }
 
 void allArrayFTB(int pos, CRGB color) {
-  int loc = ledArray87[pos];
+  int loc = ledArray93[pos];
   switch (loc) {
     case 1:
       //  0-23 -> 1(23-0)
@@ -569,14 +571,14 @@ void allArrayFTB(int pos, CRGB color) {
       break;
     case 5:
       // 63-86 -> 4(0-23)
-      leds_s1[map(pos, 63, 86, 0, 23)] = leds_s2[map(pos, 63, 86, 0, 23)] = color;
+      leds_s1[map(pos, 63, 92, 0, 29)] = leds_s2[map(pos, 63, 92, 0, 29)] = color;
       break;
   }
 }
 
 void allArrayBTF(int pos, CRGB color) {
-  pos = map(pos, 0, 87, 87 , 0);
-  int loc = ledArray87[pos];
+  pos = map(pos, 0, 93, 93 , 0);
+  int loc = ledArray93[pos];
   switch (loc) {
     case 1:
       //  0-23 -> 1(23-0)
@@ -599,7 +601,7 @@ void allArrayBTF(int pos, CRGB color) {
       leds_b1[map(pos, 52, 62, 0, 10)] = leds_b1[map(pos, 52, 62, 21, 11)] = color;
       break;
     case 5:
-      leds_s1[map(pos, 63, 86, 0, 23)] = leds_s2[map(pos, 63, 86, 0, 23)] = color;
+      leds_s1[map(pos, 63, 92, 0, 29)] = leds_s2[map(pos, 63, 92, 0, 29)] = color;
       break;
   }
 }
@@ -608,22 +610,26 @@ void audioVuMeter(CRGB color) {
   int level = vuMeter();
   allFadeToBlackBy(240);
   mapToLeds(leds_f1,  0, 23, level, color);
+  mapToLeds(leds_f2,  0, 23, level, color);
   mapToLeds(leds_f,   0, 21, level, color);
   mapToLeds(leds_f,  22, 48, level, color);
   mapToLeds(leds_f,  49, 59, level, color);
   mapToLeds(leds_b1,  0, 10, level, color);
   mapToLeds(leds_b1, 11, 22, level, color);
-  mapToLeds(leds_s1,  0, 23, level, color);
+  mapToLeds(leds_b2,  0, 10, level, color);
+  mapToLeds(leds_b2, 11, 22, level, color);
+  mapToLeds(leds_s1,  0, 29, level, color);
+  mapToLeds(leds_s2,  0, 29, level, color);
 }
 
 void mapToLeds(CRGB * leds, int first, int last, int peak, CRGB color) {
-  fill_rainbow(leds130, 130, gHue, 5);
+  fill_rainbow(leds136, 136, gHue, 5);
   // Map the peak to a numbers of LEDs.
   int level = map(peak, 1, 600, -1, last - first + 1);
   // And now color them.
   for (int led = first; led <= first + level; led++)
   {
-    leds[led] = leds130[led];
+    leds[led] = leds136[led];
   }
 }
 
@@ -697,36 +703,36 @@ void addGlitter(CRGB * leds, uint8_t num_leds, fract8 chanceOfGlitter) {
 void allTwinkleMapPixels(int fade) {
   //  fadeToBlackBy( leds, num_leds, 20);
   random16_add_entropy(random());
-  for ( uint16_t i = 0; i < 200; i++) {
-    if ( ledState200[i] == SteadyDim) {
+  for ( uint16_t i = 0; i < 212; i++) {
+    if ( ledState212[i] == SteadyDim) {
       // this pixels is currently: SteadyDim
       // so we randomly consider making it start getting brighter
-      if ( random16(0, 200) < 1) {
-        ledState200[i] = GettingBrighter;
+      if ( random16(0, 212) < 1) {
+        ledState212[i] = GettingBrighter;
       }
 
-    } else if ( ledState200[i] == GettingBrighter ) {
+    } else if ( ledState212[i] == GettingBrighter ) {
       // this pixels is currently: GettingBrighter
       // so if it's at peak color, switch it to getting dimmer again
-      if ( leds200[i] >= PEAK_COLOR) {
-        ledState200[i] = GettingDimmerAgain;
+      if ( leds212[i] >= PEAK_COLOR) {
+        ledState212[i] = GettingDimmerAgain;
       } else {
         // otherwise, just keep brightening it:
-        leds200[i] += CRGB(4, 4, 4);
+        leds212[i] += CRGB(4, 4, 4);
       }
 
     } else { // getting dimmer again
       // this pixels is currently: GettingDimmerAgain
       // so if it's back to base color, switch it to steady dim
-      if (leds200[i] <= CRGB(0, 0, 0) ) {
-        leds200[i] = CRGB(0, 0, 0); // reset to exact base color, in case we overshot
-        ledState200[i] = SteadyDim;
+      if (leds212[i] <= CRGB(0, 0, 0) ) {
+        leds212[i] = CRGB(0, 0, 0); // reset to exact base color, in case we overshot
+        ledState212[i] = SteadyDim;
       } else {
         // otherwise, just keep dimming it down:
-        leds200[i] -= CRGB(fade, fade, fade);
+        leds212[i] -= CRGB(fade, fade, fade);
       }
     }
-    mapTo200(i, leds200[i]);
+    mapTo212(i, leds212[i]);
   }
 }
 
@@ -830,4 +836,3 @@ void buttons() {
     animation = 200;
   }
 }
-
