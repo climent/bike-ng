@@ -87,7 +87,7 @@ void setup() {
   FastLED.setBrightness(100);
 
   // Initialize pixel state to SteadyDim:
-  memset(ledState200, SteadyDim, 212);
+  memset(ledState212, SteadyDim, 212);
 
   //initialize all to black:
 //  memset(leds_f1, NUM_LEDS_F1, CRGB::Black);
@@ -106,8 +106,8 @@ void setup() {
 
 //* Turnable knobs to change the behavior of the animations
 
-#define GHUE_SPEED 5        // How fast the rainbow colors change
-#define CYCLE_SPEED 100     // How fast we move the theater chase animation
+//#define GHUE_SPEED 5        // How fast the rainbow colors change
+//#define CYCLE_SPEED 100     // How fast we move the theater chase animation
 #define SHOWTIME 2000       // How long we stop in some animations
 #define NUM_M_ANIMATIONS 2  // How many animations we cycle through
 
@@ -135,14 +135,14 @@ bool t_speed         = 1000;
 
 void loop() {
   // cycle controls the theater chase animation
-  EVERY_N_MILLISECONDS( CYCLE_SPEED ) {
+  EVERY_N_MILLISECONDS( 100 ) {
     cycle++;
     if (cycle == 3) {
       cycle = 0;
     }
   }
   // gHue controls the rainbow
-  EVERY_N_MILLISECONDS( GHUE_SPEED ) {
+  EVERY_N_MILLISECONDS( 5 ) {
     gHue++;  // slowly cycle the "base color" through the rainbow
   }
   EVERY_N_MILLISECONDS( 1 ) {
@@ -539,7 +539,6 @@ void cylon() {
   for (int pos = j - 1 ; pos < j + 1 ; pos++) {
     if (pos < 0) pos = 0;
     if (pos > 93) pos = 93;
-    int loc = ledArray93[pos];
     mapTo93(pos, CHSV(gHue, 255, 192));
   }
 }
@@ -737,10 +736,10 @@ void allTwinkleMapPixels(int fade) {
 
 
 // Button timing variables
-int debounce = 20; // ms debounce period to prevent flickering when pressing or releasing the button
-int DCgap = 250; // max ms between clicks for a double click event
-int holdTime = 2000; // ms hold period: how long to wait for press+hold event
-int longHoldTime = 5000; // ms long hold period: how long to wait for press+hold event
+unsigned int debounce = 20; // ms debounce period to prevent flickering when pressing or releasing the button
+unsigned int DCgap = 250; // max ms between clicks for a double click event
+unsigned int holdTime = 2000; // ms hold period: how long to wait for press+hold event
+unsigned int longHoldTime = 5000; // ms long hold period: how long to wait for press+hold event
 
 // Other button variables
 boolean buttonVal = HIGH; // value read from button
@@ -825,7 +824,7 @@ void buttons() {
   }
   if (b == 2) {
     mode++;
-    if (mode > 2) mode = 1;
+    if (mode > 4) mode = 1;
   }
   if (b == 3) {
     mode = 3;
@@ -834,3 +833,116 @@ void buttons() {
     mode = 4;
   }
 }
+
+//// Snakes
+//
+//#include <FastLED.h>
+//
+//#define DATA_PIN 6
+//#define BUTTON_PIN 9
+//
+//int  ledState[144];
+//int  ledColor[144];
+//int  ledDir[144];
+//int  newLedState[144];
+//int  newLedColor[144];
+//int  newLedDir[144];
+//CRGB leds[144];
+//
+//void setup() {
+//  FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, 144).setCorrection(TypicalLEDStrip);;
+//  FastLED.setBrightness(100);
+//  
+//  pinMode(BUTTON_PIN, INPUT_PULLUP);
+//  digitalWrite(BUTTON_PIN, HIGH);
+//}
+//
+//void loop() {
+//    EVERY_N_MILLISECONDS(100) {
+//      int led = random16(144);
+//      int color = random8(3);
+//      int siz = random8(20);
+//      int dir = random8(2);
+//  
+//      ledState[led] = siz;
+//      ledColor[led] = color;
+//      ledDir[led] = dir;
+//    }
+////  ledState[40] = 10;
+////  ledColor[40] = 0;
+////  ledDir[40] = 1;
+//
+//  for (int i = 0; i < 144; i++) {
+//    if (ledState[i] > 0) {
+//      if (ledDir[i] == 0) { // The direction of the LED is negative
+//        if (i - 1 >= 0)
+//          switch (ledColor[i]) {
+//            case 0:
+//              leds[i - 1].red += 255;
+//              break;
+//            case 1:
+//              leds[i - 1].green += 255;
+//              break;
+//            case 2:
+//              leds[i - 1].blue += 255;
+//              break;
+//          }
+//          newLedColor[i - 1] = ledColor[i];
+//          newLedColor[i] = 3;
+//          newLedState[i - 1] = ledState[i] - 1;  // Decrease the next pixel count.
+//          newLedState[i] = 0;                    // Reset the current pixel.
+//          newLedDir[i - 1] = ledDir[i];
+//      }
+//      if (ledDir[i] == 1) { // The direction of the LED is positive
+//        if (i + 1 <= 143) {
+//          switch (ledColor[i]) {
+//            case 0:
+//              leds[i + 1].red += 255;
+//              break;
+//            case 1:
+//              leds[i + 1].green += 255;
+//              break;
+//            case 2:
+//              leds[i + 1].blue += 255;
+//              break;
+//          }
+//          newLedColor[i + 1] = ledColor[i];
+//          newLedColor[i] = 3;
+//          newLedState[i + 1] = ledState[i] - 1;  // Decrease the next pixel count.
+//          newLedState[i] = 0;                    // Reset the current pixel.
+//          newLedDir[i + 1] = ledDir[i];
+//        }
+//      }
+//    }
+//  }
+//  for (int i = 0; i < 144; i++) {
+//    ledState[i] = newLedState[i];
+//    ledColor[i] = newLedColor[i];
+//    ledDir[i] = newLedDir[i];
+//  }
+//  fadeToBlackBy(leds, 144, 100);
+//  FastLED.show();
+//  delay(50);
+//  //  for (int i = 0; i < 144; i++) {
+//  //    leds[i] = CRGB::White;
+//  //    FastLED.show();
+//  //    leds[i] = CRGB::Black;
+//  //  }
+//}
+//
+//CRGB color(int color) {
+//  switch (color) {
+//    case 0:
+//      return CRGB::Red;
+//      break;
+//    case 1:
+//      return CRGB::Green;
+//      break;
+//    case 2:
+//      return CRGB::Blue;
+//      break;
+//    case 3:
+//      return CRGB::Black;
+//      break;
+//  }
+//}
