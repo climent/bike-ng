@@ -157,12 +157,16 @@ void buttons() {
   switch (singleClick) {
     case 1:
       if (configMode) {
-        for (int i = 48; i < 212; i++) mapTo212(i, CRGB::Red);
+        currentBrightness += 51; // increase the brightness (wraps to lowest)
+        for (int i = 0; i < 59; i++) leds_f[i] = CRGB::Red;
+        for (int i = 0; i < 21; i++) leds_b1[i] = leds_b2[i] = CRGB::Red;
+        for (int i = 0; i < scale8(currentBrightness, 30); i++) leds_s1[i] = leds_s2[i] = CRGB::Red;
         FastLED.show();
         delay(100);
-        currentBrightness += 51; // increase the brightness (wraps to lowest)
         FastLED.setBrightness(scale8(currentBrightness, MAXBRIGHTNESS));
-        for (int i = 48; i < 212; i++) mapTo212(i, CRGB::Red);
+        for (int i = 0; i < 59; i++) leds_f[i] = CRGB::Red;
+        for (int i = 0; i < 21; i++) leds_b1[i] = leds_b2[i] = CRGB::Red;
+        for (int i = 0; i < scale8(currentBrightness, 30); i++) leds_s1[i] = leds_s2[i] = CRGB::Red;
       } else {
         nextEffect();
       }
