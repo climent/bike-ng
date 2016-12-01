@@ -60,12 +60,13 @@ void cylon() {
     effectInit = true;
     fadeAll = true;
   }
-  int gHue = 250; // pink, like my bike
+  //  int gHue = 250; // pink, like my bike
   allFadeToBlackBy(5);
-  int j = beatsin8(20, 0, 93);
+  int j = beatsin8(20, 0, 92);
+  //  display.println(j);
+  //  display.display();
   for (int pos = j - 1 ; pos < j + 1 ; pos++) {
-    if (pos < 0) pos = 0;
-    if (pos > 93) pos = 93;
+    constrain(pos, 0, 92);
     mapTo93(pos, CHSV(gHue, 255, 192));
   }
 }
@@ -82,7 +83,7 @@ void allTwinkleMapPixels() {
     }
   }
   if (fadeAll == false) {
-    random16_add_entropy(random());
+    random16_add_entropy(random8());
     for ( uint16_t i = 0; i < 212; i++) {
       if ( ledState212[i] == SteadyDim) {
         // this pixels is currently: SteadyDim

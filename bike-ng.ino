@@ -13,6 +13,10 @@
 #include "audiov2.h"
 #include "effects.h"
 
+#ifdef USE_OLED
+#include "oled.h"
+#endif
+
 typedef void (*functionList)(); // definition for list of effect function pointers
 
 functionList effectList[] = {
@@ -59,14 +63,32 @@ void setup() {
     currentEffect =     EEPROM.read(1);
     autoCycle =         EEPROM.read(2);
     currentBrightness = EEPROM.read(3);
-    //randomizedEffect =  EEPROM.read(4);
+    randomizedEffect =  EEPROM.read(4);
     paletteN =          EEPROM.read(5);
     randomPalette =     EEPROM.read(6);
   }
   if (currentEffect > (numEffects - 1)) currentEffect = 0;
 
   // set global brightness value
-  FastLED.setBrightness( scale8(currentBrightness, MAXBRIGHTNESS) );
+  FastLED.setBrightness(scale8(currentBrightness, MAXBRIGHTNESS));
+
+#ifdef USE_OLED
+  // by default, we'll generate the high voltage from the 3.3v line internally! (neat!)
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);  // initialize with the I2C addr 0x3C (for the 128x64)
+  // init done
+  display.clearDisplay();
+  display.setTextSize(2);
+  display.setTextColor(WHITE);
+  display.setCursor(0, 0);
+  display.println("Bike v1");
+  display.println("booting...");
+  display.display();
+  delay(1000);
+
+  // Clear the buffer.
+  display.clearDisplay();
+  display.display();
+#endif
 }
 
 bool initial = true;
@@ -113,7 +135,6 @@ void loop() {
         break;
     }
   }
-
   FastLED.show();
   checkEEPROM();
 }
@@ -152,43 +173,86 @@ void nextEffect() {
   lastCycle = millis();
 }
 
+functionList configList[] = {
+  configBrightness,
+  configRandomness,
+  configAutoCycle,
+  configRandomPalette,
+};
+
+const byte numConfigs = (sizeof(configList) / sizeof(configList[0]));
+
+void nextConfig() {
+  currentConfig++;
+  if (currentConfig > (numConfigs - 1)) currentConfig = 0;
+}
+
+void configBrightness() {
+  currentBrightness += 51; // increase the brightness (wraps to lowest)
+  if (currentBrightness < 40) currentBrightness = 40;
+  FastLED.setBrightness(scale8(currentBrightness, MAXBRIGHTNESS));
+  FastLED.show();
+  for (int i = 0; i < 59; i++) leds_f[i] = CRGB::Red;
+  for (int i = 0; i < 21; i++) leds_b1[i] = leds_b2[i] = CRGB::Red;
+  for (int i = 0; i < scale8(currentBrightness, 30); i++) leds_s1[i] = leds_s2[i] = CRGB::Red;
+}
+
+void configRandomness() {
+  randomizedEffect = not randomizedEffect;
+  if (randomizedEffect) {
+    for (int i = 48; i < 212; i++) mapTo212(i, CRGB::Blue);
+  } else {
+    for (int i = 48; i < 212; i++) mapTo212(i, CRGB::Cyan);
+  }
+}
+
+void configAutoCycle() {
+  autoCycle = not autoCycle;
+}
+
+void configRandomPalette() {
+  randomPalette = not randomPalette;
+}
+
 void buttons() {
-  int singleClick = checkButton();
-  switch (singleClick) {
-    case 1:
-      if (configMode) {
-        currentBrightness += 51; // increase the brightness (wraps to lowest)
-        for (int i = 0; i < 59; i++) leds_f[i] = CRGB::Red;
-        for (int i = 0; i < 21; i++) leds_b1[i] = leds_b2[i] = CRGB::Red;
-        for (int i = 0; i < scale8(currentBrightness, 30); i++) leds_s1[i] = leds_s2[i] = CRGB::Red;
-        FastLED.show();
-        delay(100);
-        FastLED.setBrightness(scale8(currentBrightness, MAXBRIGHTNESS));
-        for (int i = 0; i < 59; i++) leds_f[i] = CRGB::Red;
-        for (int i = 0; i < 21; i++) leds_b1[i] = leds_b2[i] = CRGB::Red;
-        for (int i = 0; i < scale8(currentBrightness, 30); i++) leds_s1[i] = leds_s2[i] = CRGB::Red;
-      } else {
+  buttonClick = checkButton();
+  if (configMode) {
+    switch (buttonClick) {
+      case 1:
+        configList[currentConfig]();
+        configDisplay();
+        break;
+      case 2:
+        nextConfig();
+        configDisplay();
+        break;
+      case 4:
+        configMode = not configMode;
+        mode = 1;
+        clearDisplay();
+        break;
+    }
+  } else {
+    switch (buttonClick) {
+      case 1:
         nextEffect();
-      }
-      break;
-    case 2:
-      if (configMode) {
-        randomPalette = not randomPalette;
-        if (randomPalette) {
-          for (int i = 48; i < 212; i++) mapTo212(i, CRGB::Blue);
-        } else {
-          for (int i = 48; i < 212; i++) mapTo212(i, CRGB::Cyan);
-        }
-      } else {
+        buttonDisplay();
+        break;
+      case 2:
         autoCycle = not autoCycle;
-      }
-      break;
-    case 3:
-      mode = 100 - mode;
-      break;
-    case 4:
-      configMode = not configMode;
-      break;
+        buttonDisplay();
+        break;
+      case 3:
+        mode = 100 - mode;
+        buttonDisplay();
+        break;
+      case 4:
+        configMode = not configMode;
+        if (configMode) {
+          configDisplay();
+        }
+        break;
+    }
   }
 }
 
@@ -212,3 +276,43 @@ void checkEEPROM() {
     }
   }
 }
+
+#ifdef USE_OLED
+void configDisplay() {
+  display.clearDisplay();
+  display.setTextSize(1);
+  display.setTextColor(WHITE);
+  display.setCursor(0, 0);
+  display.println("Config mode");
+  display.println("");
+  display.print("  Brightness: "); display.println(currentBrightness);
+  display.print("  RandEffect: "); display.println(randomizedEffect, DEC);
+  display.print("  AutoCycle:  "); display.println(autoCycle, DEC);
+  display.print("  Palette:    "); display.println(randomPalette, DEC);
+  display.setCursor(0, 16 + currentConfig * 8);
+  display.print("*");
+  //  display.println(currentConfig, DEC);
+  display.display();
+}
+
+void buttonDisplay() {
+  display.clearDisplay();
+  display.setTextSize(1);
+  display.setTextColor(WHITE);
+  display.setCursor(0, 0);
+  display.println(buttonClick);
+  display.display();
+}
+
+void clearDisplay() {
+  display.clearDisplay();
+  display.display();
+}
+#else
+void configDisplay() {
+}
+void buttonDisplay() {
+}
+void clearDisplay() {
+}
+#endif

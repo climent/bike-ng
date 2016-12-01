@@ -4,6 +4,9 @@
 #define MAXBRIGHTNESS 72
 #define STARTBRIGHTNESS 102
 
+// Whether to use the OLED screen. Affects the definitions of display functions.
+#define USE_OLED 1
+
 byte currentBrightness = STARTBRIGHTNESS; // 0-255 will be scaled to 0-MAXBRIGHTNESS
 
 // Time after changing settings before settings are saved to EEPROM
@@ -23,11 +26,14 @@ uint8_t animation = 1;
 uint8_t fader =     0;
 uint8_t twinkle =   2;
 uint8_t bpm =      62;
+
 byte paletteN;
 
 fract8 chanceOfGlitter = 100;
 
 uint8_t currentEffect;
+uint8_t currentConfig = 0;
+uint8_t buttonClick;
 
 bool autoCycle = true; // flag for automatic effect changes
 bool increaseHead = false;
