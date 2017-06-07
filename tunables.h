@@ -1,8 +1,8 @@
 //* Tunable knobs to change the behavior of the animations
 #define cycleTime 5000
 
-#define MAXBRIGHTNESS 72
-#define STARTBRIGHTNESS 102
+#define MAXBRIGHTNESS 192
+#define STARTBRIGHTNESS 63
 
 // Whether to use the OLED screen. Affects the definitions of display functions.
 #define USE_OLED 1

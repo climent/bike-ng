@@ -14,17 +14,17 @@
 #define DATA_PIN_F2 2
 #define NUM_LEDS_F2 24
 
-#define DATA_PIN_F 6
+#define DATA_PIN_F 3
 #define NUM_LEDS_F 60
 
-#define DATA_PIN_B1 7
+#define DATA_PIN_B1 4
 #define NUM_LEDS_B1 22
-#define DATA_PIN_B2 8
+#define DATA_PIN_B2 5
 #define NUM_LEDS_B2 22
 
-#define DATA_PIN_S1 10
+#define DATA_PIN_S1 6
 #define NUM_LEDS_S1 30
-#define DATA_PIN_S2 11
+#define DATA_PIN_S2 7
 #define NUM_LEDS_S2 30
 
 CRGB leds212[212];

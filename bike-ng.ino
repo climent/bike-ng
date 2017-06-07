@@ -80,7 +80,7 @@ void setup() {
   display.setTextSize(2);
   display.setTextColor(WHITE);
   display.setCursor(0, 0);
-  display.println("Bike v1");
+  display.println("Bike NG v2");
   display.println("booting...");
   display.display();
   delay(1000);
@@ -94,6 +94,19 @@ void setup() {
 bool initial = true;
 
 void loop() {
+  if (initial == true) {
+    for (int m = 0; m < 136; m++) {
+      mapTo136(m, CRGB::Blue);
+      FastLED.show();
+      delay(35);
+    }
+    for (int m = 0; m < 136; m++) {
+      mapTo136(m, CRGB::Black);
+      FastLED.show();
+      delay(35);
+    }
+    initial = false;
+  }
   // cycle controls the theater chase animation
   EVERY_N_MILLISECONDS( 100 ) {
     cycle++;
@@ -173,6 +186,8 @@ void nextEffect() {
   lastCycle = millis();
 }
 
+
+
 functionList configList[] = {
   configBrightness,
   configRandomness,
@@ -188,8 +203,8 @@ void nextConfig() {
 }
 
 void configBrightness() {
-  currentBrightness += 51; // increase the brightness (wraps to lowest)
-  if (currentBrightness < 40) currentBrightness = 40;
+  currentBrightness += 32; // increase the brightness (wraps to lowest)
+  if (currentBrightness < 31) currentBrightness = 31;
   FastLED.setBrightness(scale8(currentBrightness, MAXBRIGHTNESS));
   FastLED.show();
   for (int i = 0; i < 59; i++) leds_f[i] = CRGB::Red;
@@ -256,9 +271,12 @@ void buttons() {
   }
 }
 
+
 // write EEPROM value if it's different from stored value
 void updateEEPROM(byte location, byte value) {
-  if (EEPROM.read(location) != value) EEPROM.write(location, value);
+  if (!autoCycle) {
+    if (EEPROM.read(location) != value) EEPROM.write(location, value);
+  }
 }
 
 // Write settings to EEPROM if necessary
@@ -280,24 +298,36 @@ void checkEEPROM() {
 #ifdef USE_OLED
 void configDisplay() {
   display.clearDisplay();
-  display.setTextSize(1);
+  display.setTextSize(2);
   display.setTextColor(WHITE);
   display.setCursor(0, 0);
-  display.println("Config mode");
-  display.println("");
-  display.print("  Brightness: "); display.println(currentBrightness);
-  display.print("  RandEffect: "); display.println(randomizedEffect, DEC);
-  display.print("  AutoCycle:  "); display.println(autoCycle, DEC);
-  display.print("  Palette:    "); display.println(randomPalette, DEC);
-  display.setCursor(0, 16 + currentConfig * 8);
-  display.print("*");
+  display.println("Config");
+  switch (currentConfig) {
+    case 0:
+      display.println("Brightness");
+      for (int i = 0; i < (currentBrightness / 32) + 1; i++) {
+        display.print("*");
+      }
+      break;
+    case 1:
+      display.println("RandEffect"); display.println(randomizedEffect, DEC);
+      break;
+    case 2:
+      display.println("AutoCycle"); display.println(autoCycle, DEC);
+      break;
+    case 3:
+      display.println("Palette"); display.println(randomPalette, DEC);
+      break;
+  }
+  //  display.println(currentConfig);
+  //  display.setCursor(0, 16 + currentConfig * 8);
   //  display.println(currentConfig, DEC);
   display.display();
 }
 
 void buttonDisplay() {
   display.clearDisplay();
-  display.setTextSize(1);
+  display.setTextSize(2);
   display.setTextColor(WHITE);
   display.setCursor(0, 0);
   display.println(buttonClick);
