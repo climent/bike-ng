@@ -9,22 +9,22 @@
 //     - 11 LEDs, from the bottom of the base of the saddle post to the dropouts
 //   * 2x 24 LED strips from the dropouts upwards, in the sissy bar.
 
-#define DATA_PIN_F1 1
+#define DATA_PIN_F1 6
 #define NUM_LEDS_F1 24
-#define DATA_PIN_F2 2
+#define DATA_PIN_F2 7
 #define NUM_LEDS_F2 24
 
-#define DATA_PIN_F 3
+#define DATA_PIN_F 8
 #define NUM_LEDS_F 60
 
-#define DATA_PIN_B1 4
+#define DATA_PIN_B1 9
 #define NUM_LEDS_B1 22
-#define DATA_PIN_B2 5
+#define DATA_PIN_B2 10
 #define NUM_LEDS_B2 22
 
-#define DATA_PIN_S1 6
+#define DATA_PIN_S1 11
 #define NUM_LEDS_S1 30
-#define DATA_PIN_S2 7
+#define DATA_PIN_S2 12
 #define NUM_LEDS_S2 30
 
 CRGB leds212[212];

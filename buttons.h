@@ -1,5 +1,5 @@
 // buttons.h
-#define BUTTON_PIN 9
+#define BUTTON_PIN 14
 
 // Button timing variables
 unsigned int debounce = 20; // ms debounce period to prevent flickering when pressing or releasing the button

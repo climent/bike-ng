@@ -35,15 +35,15 @@ uint8_t currentEffect;
 uint8_t currentConfig = 0;
 uint8_t buttonClick;
 
-bool autoCycle = true; // flag for automatic effect changes
-bool increaseHead = false;
-bool effectInit = true;;
+bool autoCycle        = true; // flag for automatic effect changes
+bool increaseHead     = false;
+bool effectInit       = true;;
 bool randomizedEffect = false;
 bool rainbow;
-bool fadeAll = false;
+bool fadeAll          = false;
 bool eepromOutdated;
-bool randomPalette = true;
-bool configMode = false;
+bool randomPalette    = true;
+bool configMode       = false;
 
 unsigned long now;
 unsigned long lastCycle = millis();
